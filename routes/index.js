@@ -2,11 +2,15 @@ var express = require('express');
 var router = express.Router();
 var surveyGizmo = require('../lib/SurveyGizmo');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+/* GET dashboard */
+router.get('/', (req, res, _) => {
+  res.render('dashboard');
+});
+
+router.get('/responses', (req, res, _) => {
   surveyGizmo.renderData()
-    .then(html => {
-      res.send(html);
+    .then(json => {
+      res.send(json);
     })
     .catch(error => {throw error});
 });
