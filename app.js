@@ -1,14 +1,15 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const compileSass = require('express-compile-sass');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+const index = require('./routes/index');
+const users = require('./routes/users');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,6 +21,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compileSass({
+    root: process.cwd(),
+    sourceMap: false, // Includes Base64 encoded source maps in output css
+    sourceComments: false, // Includes source comments in output css
+    watchFiles: true, // Watches sass files and updates mtime on main files for each change
+    logToConsole: true // If true, will log to console.error on errors
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);

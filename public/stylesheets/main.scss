@@ -1,0 +1,83 @@
+$primary-color: #4F463D;
+$secondary-color: #9B9EA0;
+$accent-color: #F76B1C;
+
+*, html, body {
+  padding: 0;
+  margin: 0;
+  font-family: Roboto, sans;
+}
+
+html {
+  font-size: 16px;
+}
+
+h1 {
+  color: $primary-color;
+  margin: 1em;
+}
+
+#logoWrapper {
+  img, h4 {
+    display: inline-block;
+    color: $secondary-color;
+    vertical-align: middle;
+    font-family: Roboto Condensed;
+    font-weight: 100;
+  }
+
+  h4 {
+    font-size: 2rem;
+  }
+}
+
+.highlight-text {
+  color: $accent-color;
+  font-weight: 600;
+}
+
+.form-responses {
+  list-style: none;
+}
+
+.form-responses-item {
+  color: $primary-color;
+  border: 1px solid $accent-color;
+  width: 400px;
+  height: 400px;
+  display: inline-block;
+  margin: 1em;
+  padding: 1em;
+  vertical-align: top;
+  box-shadow: 1px 1px 5px $secondary-color;
+  transition: box-shadow .3s;
+  font-weight: 300;
+
+  &:hover {
+    box-shadow: 3px 3px 3px $secondary-color;
+  }
+
+  .actions {
+    font-size: 1.8rem;
+    color: $accent-color;
+    text-align: center;
+    padding: 1rem 0;
+
+    button {
+      padding: 1rem 2rem;
+      background: $primary-color;
+      color: white;
+      border: 0 none;
+      outline: 0 none;
+      border-radius: 2px;
+      margin: 0 1rem;
+      cursor: pointer;
+      font-weight: 300;
+      transition: all .3s;
+
+      &:hover, &:focus, &:active {
+        background: $accent-color;
+      }
+    }
+  }
+}

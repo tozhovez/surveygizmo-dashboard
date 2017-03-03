@@ -2,6 +2,10 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/public/stylesheets/main.scss')
   body
+    div#logoWrapper
+      img#logo(src="/images/logo.png", height="150")
+      h4 Survey Gizmo Dashboard
+
     block content

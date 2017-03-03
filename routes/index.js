@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var surveyGizmo = require('../lib/SurveyGizmo');
+const express = require('express');
+const router = express.Router();
+const app = require('../app');
+const surveyGizmo = require('../lib/SurveyGizmo');
 
 /* GET dashboard */
 router.get('/', (req, res, _) => {

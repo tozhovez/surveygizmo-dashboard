@@ -10,7 +10,7 @@ module.exports = class FormResponses extends React.Component {
     }
   }
 
-  componentWillMount() {
+  getResponses() {
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = () => {
@@ -26,9 +26,13 @@ module.exports = class FormResponses extends React.Component {
     xhr.send();
   }
 
+  componentDidMount() {
+    this.getResponses()
+  }
+
   render() {
     return (
-      <ul>
+      <ul className="form-responses">
         {
           this.state.responses.map(response => {
             return <FormResponse key={`form-response-${response.id}`} response={response} />;
