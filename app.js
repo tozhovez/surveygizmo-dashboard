@@ -5,6 +5,9 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compileSass = require('express-compile-sass');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const config = require('./config/main');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -29,6 +32,19 @@ app.use(compileSass({
     logToConsole: true // If true, will log to console.error on errors
 }));
 
+app.use(session({
+  secret: config.cookieSecret,
+  cookie: { maxAge: config.cookieMaxAge },
+  store: new RedisStore()
+}));
+
+app.use(skipRoutes(config.whitelistRoutes, redirectAnonymous));
+
+app.use((req, _, next) => {
+  app.locals.email = req.email = getEmailFromSession(req);
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
@@ -51,5 +67,30 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+function skipRoutes(routes, middleware) {
+  return (req, res, next) => {
+    if(routes.some(route => route === req.path)) {
+      return next();
+    } else {
+      return middleware(req, res, next);
+    }
+  };
+}
+
+function redirectAnonymous(req, res, next) {
+  if (getEmailFromSession(req)) {
+    next();
+  } else {
+    res.redirect('/users/auth');
+  }
+}
+
+function getEmailFromSession(req) {
+  const oauthEmail = req.session.user && req.session.user.email;
+  const ltiEmail = req.session.lti && req.session.lti.email;
+
+  return oauthEmail || ltiEmail || undefined;
+}
 
 module.exports = app;

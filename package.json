@@ -3,17 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor node ./bin/www | npm run watch",
+    "start": "supervisor ./bin/www | npm run watch",
     "build": "browserify -t bubleify ./src/app.js  > ./public/javascripts/bundle.js",
     "build-dev": "browserify -d -t bubleify ./src/app.js > ./public/javascripts/bundle.js",
     "watch": "watchify -d -t bubleify ./src/app.js -o ./public/javascripts/bundle.js -v"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
+    "connect-redis": "^3.2.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.0",
+    "edx-oauth-middleware": "0.0.5",
     "express": "~4.14.1",
     "express-compile-sass": "^3.0.4",
+    "express-session": "^1.15.1",
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
     "node-sass": "^4.5.0",
