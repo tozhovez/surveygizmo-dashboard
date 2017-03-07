@@ -14,5 +14,3 @@ module.exports = (() => {
 
     return env_variables;
 })();
-
-
