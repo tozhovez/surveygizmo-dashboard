@@ -18,6 +18,7 @@ module.exports = class FormResponses extends React.Component {
         this.setState({responses: JSON.parse(xhr.responseText)});
       }
       else if (xhr.readyState === 4 && xhr.status !== 200) {
+        console.log(xhr.statusText);
         throw new Error('Fetching responses failed');
       }
     }

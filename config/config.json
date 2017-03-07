@@ -1,0 +1,56 @@
+{
+  "development": {
+    "username": "root",
+    "password": "root",
+    "database": "surveygizmo",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "baseUrl": "http://localhost",
+    "lmsPort": 8000,
+    "studioPort": 8001,
+    "applicationPort": 3001,
+    "client": {
+      "id": "sg-id",
+      "secret": "sg-secret"
+    },
+    "auth": {
+      "tokenHost": "http://localhost:8000",
+      "authorizePath": "/oauth2/authorize",
+      "tokenPath": "/oauth2/access_token/"
+    },
+    "lti": {
+      "key": "key",
+      "secret": "secret"
+    },
+    "cookieSecret": "surveygizmo",
+    "cookieMaxAge": 60000,
+    "whitelistRoutes": ["/", "/users/auth", "/users/login", "/surveyquestion.json", "/surveyresponse.json"]
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "surveygizmo_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "baseUrl": "http://54.208.243.8",
+    "lmsPort": 80,
+    "studioPort": 18010,
+    "applicationPort": 3001,
+    "client": {
+      "id": "id",
+      "secret": "secret"
+    },
+    "auth": {
+      "tokenHost": "http://54.208.243.8",
+      "authorizePath": "/oauth2/authorize",
+      "tokenPath": "/oauth2/access_token/"
+    },
+    "lti": {
+      "key": "key",
+      "secret": "secret"
+    },
+    "cookieSecret": "surveygizmo",
+    "cookieMaxAge": 60000,
+    "whitelistRoutes": ["/", "/users/auth", "/users/login"]
+  }
+}

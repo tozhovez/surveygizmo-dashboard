@@ -29,6 +29,13 @@ h1 {
   h4 {
     font-size: 2rem;
   }
+
+  h5 {
+    float: right;
+    line-height: 150px;
+    margin-right: 4rem;
+    color: $secondary-color;
+  }
 }
 
 .highlight-text {
