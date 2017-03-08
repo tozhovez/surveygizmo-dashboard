@@ -37,13 +37,13 @@
     "studioPort": 18010,
     "applicationPort": 3001,
     "client": {
-      "id": "id",
-      "secret": "secret"
+      "id": "sg-id",
+      "secret": "sg-secret"
     },
     "auth": {
       "tokenHost": "http://54.208.243.8",
       "authorizePath": "/oauth2/authorize",
-      "tokenPath": "/oauth2/access_token/"
+      "tokenPath": "/oauth2/access_token"
     },
     "lti": {
       "key": "key",
