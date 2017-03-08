@@ -34,7 +34,18 @@ h1 {
     float: right;
     line-height: 150px;
     margin-right: 4rem;
-    color: $secondary-color;
+
+    a {
+      color: $secondary-color;
+      text-decoration: none;
+      transition: color .4s;
+      margin: 1em;
+      font-weight: 400;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
   }
 }
 
