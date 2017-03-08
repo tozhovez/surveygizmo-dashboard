@@ -38,7 +38,7 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(skipRoutes(config.whitelistRoutes, redirectAnonymous));
+// app.use(skipRoutes(config.whitelistRoutes, redirectAnonymous));
 
 app.use((req, _, next) => {
   app.locals.email = req.email = getEmailFromSession(req);
