@@ -7,6 +7,15 @@ html
     div#logoWrapper
       img#logo(src="/images/logo.png", height="150")
       h4 Survey Gizmo Dashboard
-      h5= email
+      h5
+        a(href='/') Home
+        a(href='/', onclick=`javascript:event.target.port=${config.lmsPort}`) LMS
+        a(href='/', onclick=`javascript:event.target.port=${config.studioPort}`) Studio
+        a(href='/users/auth', onclick='javascript:event.target.port=3000') Portfolio
+
+        if email
+          a(href='/users/logout', title='Click to log out')= email
+        else
+          a(href='/users/auth') Log in
 
     block content
