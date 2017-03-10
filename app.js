@@ -42,14 +42,12 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use(skipWhitelistedRoutes(redirectAnonymous));
 
 app.use((req, _, next) => {
   app.locals.email = req.email = getEmailFromSession(req);
   next();
 });
-
 
 app.use('/', index);
 app.use('/users', users);
