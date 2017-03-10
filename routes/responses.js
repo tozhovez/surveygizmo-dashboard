@@ -13,21 +13,19 @@ router.get('/', (req, res, next) => {
 
 
 router.get('/:responseId/approve', (req, res, next) => {
-  EdxApi.grantCcxRole('Laury', req.session.token.access_token).then(data => res.send(data));
-  // surveyGizmo.getResponse(req.params.responseId)
-  // .then(response => {
-  //   console.log(response);
-  //   return EdxApi.createAccount(response.questions);
-  // })
-  // .then(account => {
-  //   return EdxApi.grantCcxRole(account, req.session);
-  // })
-  // .then(response => {
-  //   res.send(JSON.stringify(response));
-  // })
-  // .catch(error => {
-  //   next(error);
-  // });
+  surveyGizmo.getResponse(req.params.responseId)
+  .then(response => {
+    return EdxApi.createAccount(response.questions);
+  })
+  .then(account => {
+    return EdxApi.grantCcxRole(account.username, req.session.token.access_token);
+  })
+  .then(username => {
+    res.send(username);
+  })
+  .catch(error => {
+    next(error);
+  });
 });
 
 
