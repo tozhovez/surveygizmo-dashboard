@@ -8,8 +8,7 @@ const compileSass = require('express-compile-sass');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const config = require('./config/main');
-const whitelistRoutes = config.whitelistRoutes;
-const {skipRoutes, getEmailFromSession} = require('./lib/helpers')
+const {skipWhitelistedRoutes, getEmailFromSession} = require('./lib/helpers')
 const index = require('./routes/index');
 const users = require('./routes/users');
 
@@ -41,7 +40,7 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(skipRoutes(whitelistRoutes, redirectAnonymous));
+app.use(skipWhitelistedRoutes(redirectAnonymous));
 
 app.use((req, _, next) => {
   app.locals.email = req.email = getEmailFromSession(req);
