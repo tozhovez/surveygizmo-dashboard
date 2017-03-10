@@ -9,6 +9,7 @@
     "watch": "watchify -d -t bubleify ./src/app.js -o ./public/javascripts/bundle.js -v"
   },
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "~1.16.0",
     "connect-redis": "^3.2.0",
     "cookie-parser": "~1.4.3",
@@ -22,7 +23,8 @@
     "node-sass": "^4.5.0",
     "react": "^15.4.2",
     "request": "^2.79.0",
-    "serve-favicon": "~2.3.2"
+    "serve-favicon": "~2.3.2",
+    "simple-oauth2": "^1.1.0"
   },
   "devDependencies": {
     "bubleify": "^0.7.0",
