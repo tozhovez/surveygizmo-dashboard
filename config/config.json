@@ -24,7 +24,7 @@
     },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
-    "whitelistRoutes": ["/", "/users/auth", "/users/login", "/surveyquestion.json", "/surveyresponse.json"]
+    "whitelistRoutes": ["/users/auth", "/users/login"]
   },
   "production": {
     "username": "root",
