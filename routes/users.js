@@ -18,12 +18,6 @@ const {authorize, storeAccessToken, logout} = require('edx-oauth-middleware').in
   auth: config.auth
 });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  console.log(loginUrl, redirectOnLoginUrl);
-  res.send(redirectOnLoginUrl);
-});
-
 router.get('/auth', authorize);
 
 router.get('/login', storeAccessToken, getUserInfo);
