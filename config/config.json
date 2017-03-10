@@ -24,7 +24,8 @@
     },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
-    "whitelistRoutes": ["/users/auth", "/users/login"]
+    "whitelistRoutes": ["/", "/users/auth", "/users/login"],
+    "courseId": "course-v1:edX+DemoX+Demo_Course"
   },
   "production": {
     "username": "root",
@@ -51,6 +52,7 @@
     },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
-    "whitelistRoutes": ["/", "/users/auth", "/users/login"]
+    "whitelistRoutes": ["/", "/users/auth", "/users/login"],
+    "courseId": "course-v1:edX+DemoX+Demo_Course"
   }
 }
