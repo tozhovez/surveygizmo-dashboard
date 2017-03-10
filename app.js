@@ -40,6 +40,9 @@ app.use(session({
   store: new RedisStore()
 }));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.use(skipWhitelistedRoutes(redirectAnonymous));
 
 app.use((req, _, next) => {
@@ -47,7 +50,6 @@ app.use((req, _, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
