@@ -10,7 +10,7 @@ module.exports = class FormResponse extends React.Component {
   }
 
   approveResponse() {
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = () => {
       if(xhr.readyState === 4 && xhr.status === 200) {
@@ -28,12 +28,16 @@ module.exports = class FormResponse extends React.Component {
   render() {
     const {response} = this.props;
     const {questions} = response;
+
     return (
       <li className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>
         {
-          Object.keys(questions).map(q => {
-            return <div key={`form-response-question-${response.id}-${q}`}><span className="highlight-text">{`${q}`}</span>{` ${questions[q]}`}</div>
-          })
+          Object.keys(questions).map(q =>
+            <div key={`form-response-question-${response.id}-${q}`}>
+              <span className="highlight-text">{`${q}`}</span>
+              {` ${questions[q]}`}
+            </div>
+          )
         }
 
         <div className="actions">
