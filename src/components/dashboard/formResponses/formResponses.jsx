@@ -11,7 +11,7 @@ module.exports = class FormResponses extends React.Component {
   }
 
   getResponses() {
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = () => {
       if(xhr.readyState === 4 && xhr.status === 200) {
@@ -34,9 +34,9 @@ module.exports = class FormResponses extends React.Component {
     return (
       <ul className="form-responses">
         {
-          this.state.responses.map(response => {
-            return <FormResponse key={`form-response-${response.id}`} response={response} />;
-          })
+          this.state.responses.map(response =>
+            <FormResponse key={`form-response-${response.id}`} response={response} />
+          )
         }
       </ul>
     );

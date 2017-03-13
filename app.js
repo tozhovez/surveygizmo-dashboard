@@ -11,6 +11,7 @@ const config = require('./config/main');
 const {skipWhitelistedRoutes, getEmailFromSession} = require('./lib/helpers')
 const index = require('./routes/index');
 const users = require('./routes/users');
+const responses = require('./routes/responses');
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use((req, _, next) => {
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/responses', responses);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

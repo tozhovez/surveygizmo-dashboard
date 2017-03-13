@@ -59,8 +59,9 @@ h1 {
 }
 
 .form-responses-item {
+  position: relative;
   color: $primary-color;
-  border: 1px solid $accent-color;
+  border: 1px solid $secondary-color;
   width: 400px;
   height: 400px;
   display: inline-block;
@@ -75,13 +76,22 @@ h1 {
     box-shadow: 3px 3px 3px $secondary-color;
   }
 
+  &.approved {
+    border: 1px solid $accent-color;
+  }
+
   .actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     font-size: 1.8rem;
     color: $accent-color;
     text-align: center;
     padding: 1rem 0;
 
     button {
+      width: 150px;
       padding: 1rem 2rem;
       background: $primary-color;
       color: white;
