@@ -16,7 +16,7 @@ router.post('/:responseId/approve', (req, res, next) =>
   .then(response => EdxApi.createAccount(response.questions))
   .then(account => EdxApi.grantCcxRole(account, req.session.token.access_token))
   .then(account => EdxApi.sendResetPasswordRequest(account))
-  .then(username => res.send(username))
+  .then(account => res.send(account.username))
   .catch(error => next(error))
 );
 
