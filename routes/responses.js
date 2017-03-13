@@ -11,7 +11,7 @@ router.get('/', (req, res, next) =>
   .catch(error => next(error))
 );
 
-router.get('/:responseId/approve', (req, res, next) =>
+router.post('/:responseId/approve', (req, res, next) =>
   surveyGizmo.getResponse(req.params.responseId)
   .then(response => EdxApi.createAccount(response.questions))
   .then(account => EdxApi.grantCcxRole(account.username, req.session.token.access_token))
