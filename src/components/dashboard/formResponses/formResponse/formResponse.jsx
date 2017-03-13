@@ -21,7 +21,7 @@ module.exports = class FormResponse extends React.Component {
       }
     }
 
-    xhr.open('GET', `/responses/${this.props.response.id}/approve`, true);
+    xhr.open('POST', `/responses/${this.props.response.id}/approve`, true);
     xhr.send();
   }
 
