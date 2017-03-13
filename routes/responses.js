@@ -7,25 +7,17 @@ const config = require('../config/main');
 
 router.get('/', (req, res, next) => {
   surveyGizmo.getData()
-    .then(json => { res.send(json) })
-    .catch(error => { next(error) })
+    .then(json => res.send(json))
+    .catch(error => next(error))
 });
 
 
 router.get('/:responseId/approve', (req, res, next) => {
   surveyGizmo.getResponse(req.params.responseId)
-  .then(response => {
-    return EdxApi.createAccount(response.questions);
-  })
-  .then(account => {
-    return EdxApi.grantCcxRole(account.username, req.session.token.access_token);
-  })
-  .then(username => {
-    res.send(username);
-  })
-  .catch(error => {
-    next(error);
-  });
+  .then(response => EdxApi.createAccount(response.questions))
+  .then(account => EdxApi.grantCcxRole(account.username, req.session.token.access_token))
+  .then(username => res.send(username))
+  .catch(error => next(error));
 });
 
 
