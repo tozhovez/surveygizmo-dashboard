@@ -26,25 +26,19 @@ module.exports = class FormResponse extends React.Component {
   }
 
   render() {
-    const {response} = this.props;
-    const {questions} = response;
+    const { response } = this.props;
+    const { questions } = response;
 
     return (
-      <li className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>
-        {
-          Object.keys(questions).map(q =>
-            <div key={`form-response-question-${response.id}-${q}`}>
-              <span className="highlight-text">{`${q}`}</span>
-              {` ${questions[q]}`}
-            </div>
-          )
-        }
-
-        <div className="actions">
+      <tr className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>
+        <td>{`${questions['First Name']} ${questions['Last Name']}`}</td>
+        <td>{questions['Email Address']}</td>
+        <td>{response.submittedAt}</td>
+        <td>{questions['Company Name']}</td>
+        <td>
           <button onClick={() => this.approveResponse()}>Approve</button>
-          <button>Reject</button>
-        </div>
-      </li>
+        </td>
+      </tr>
     );
   }
 }
