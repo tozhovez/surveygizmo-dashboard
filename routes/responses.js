@@ -1,9 +1,8 @@
 const express = require('express');
-const router = express.Router();
 const surveyGizmo = require('../lib/SurveyGizmo');
 const EdxApi = require('../lib/EdxApi');
 
-const config = require('../config/main');
+const router = express.Router();
 
 router.get('/', (req, res, next) =>
   surveyGizmo.getData()

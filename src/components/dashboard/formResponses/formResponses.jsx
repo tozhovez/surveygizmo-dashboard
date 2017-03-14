@@ -32,13 +32,29 @@ module.exports = class FormResponses extends React.Component {
 
   render() {
     return (
-      <ul className="form-responses">
-        {
-          this.state.responses.map(response =>
-            <FormResponse key={`form-response-${response.id}`} response={response} />
-          )
-        }
-      </ul>
+      <div>
+        <h2>
+          Affiliate Signup Responses ({this.state.responses.length})
+        </h2>
+        <table className="form-responses">
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>Email</td>
+              <td>Submitted at</td>
+              <td>Company Name</td>
+              <td>Actions</td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              this.state.responses.map(response =>
+                <FormResponse key={`form-response-${response.id}`} response={response} />
+              )
+            }
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
