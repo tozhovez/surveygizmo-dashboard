@@ -34,7 +34,7 @@ module.exports = class ApproveModal extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.responseId !== this.props.responseId) {
+    if (!(nextProps === this.props)) {
       this.setState({ open: !!nextProps.responseId });
     }
   }
@@ -42,29 +42,25 @@ module.exports = class ApproveModal extends React.Component {
   render() {
     const { responseId } = this.props;
 
-    if (this.state.open) {
-      return (
-        <div className="approve-modal">
-          <button className="close-modal" onClick={this.close}>
-            Close
-          </button>
-          <div className="approve-modal-content">
-            <h1>Are you sure you want to approve this application? {responseId}</h1>
-            <button onClick={this.approveResponse}>Yes</button>
-            <button onClick={this.close}>No</button>
-            <hr/>
-            <br/>
-            <br/>
-            <p>
-              <b>WARNING</b>: Approving this application will create a user account for this person and
-              grant them CCX Coach role on your course.
-            </p>
-          </div>
+    return this.state.open && (
+      <div className="approve-modal">
+        <button className="close-modal" onClick={this.close}>
+          Close
+        </button>
+        <div className="approve-modal-content">
+          <h1>Are you sure you want to approve this application? {responseId}</h1>
+          <button onClick={this.approveResponse}>Yes</button>
+          <button onClick={this.close}>No</button>
+          <hr/>
+          <br/>
+          <br/>
+          <p>
+            <b>WARNING</b>: Approving this application will
+            create a user account for this person and
+            grant them CCX Coach role on your course.
+          </p>
         </div>
-      );
-    }
-    else {
-      return null;
-    }
+      </div>
+    );
   }
 };
