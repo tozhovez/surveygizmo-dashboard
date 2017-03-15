@@ -2,7 +2,11 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "surveygizmo",
+    "database": {
+      "host": "localhost",
+      "port": "27017",
+      "db": "surveygizmo"
+    },
     "host": "127.0.0.1",
     "dialect": "mysql",
     "baseUrl": "http://localhost",
