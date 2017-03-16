@@ -26,17 +26,17 @@ module.exports = class FormResponse extends React.Component {
   }
 
   render() {
-    const { response } = this.props;
+    const { response, showApproveModal } = this.props;
     const { questions } = response;
 
     return (
       <tr className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>
         <td>{`${questions['Full name']}`}</td>
         <td>{questions['Submitter Email']}</td>
-        <td>{response.submittedAt}</td>
+        <td>{(new Date(response.submittedAt)).toLocaleDateString()}</td>
         <td>{questions.Organization}</td>
         <td>
-          <button onClick={() => this.approveResponse()}>Approve</button>
+          <button onClick={() => showApproveModal(response.id)}>Approve</button>
         </td>
       </tr>
     );

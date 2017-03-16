@@ -1,12 +1,16 @@
 const React = require('react');
 const FormResponse = require('./formResponse/formResponse.jsx');
+const ApproveModal = require('../modals/approveModal/approveModal.jsx');
 
 module.exports = class FormResponses extends React.Component {
   constructor() {
     super();
 
+    this.showApproveModal = this.showApproveModal.bind(this);
+
     this.state = {
-      responses: []
+      responses: [],
+      approveResponseId: null
     };
   }
 
@@ -26,6 +30,10 @@ module.exports = class FormResponses extends React.Component {
     xhr.send();
   }
 
+  showApproveModal(approveResponseId) {
+    this.setState({ approveResponseId });
+  }
+
   componentDidMount() {
     this.getResponses();
   }
@@ -41,20 +49,26 @@ module.exports = class FormResponses extends React.Component {
             <tr>
               <td>Name</td>
               <td>Email</td>
-              <td>Submitted at</td>
               <td>Company Name</td>
+              <td>Submitted at</td>
               <td>Actions</td>
             </tr>
           </thead>
           <tbody>
             {
               this.state.responses.map(response =>
-                <FormResponse key={`form-response-${response.id}`} response={response} />
+                <FormResponse
+                  key={`form-response-${response.id}`}
+                  response={response}
+                  showApproveModal={this.showApproveModal}
+                />
               )
             }
           </tbody>
         </table>
+
+        <ApproveModal responseId={this.state.approveResponseId} />
       </div>
     );
   }
-}
+};
