@@ -1,7 +1,18 @@
 const mongoose = require('../lib/Mongoose');
 
 const surveyResponseSchema = mongoose.Schema({
-  fullName: String,
+  submittedAt: Date,
+  contents: [{
+    question: String,
+    answer: String
+  }],
+  status: {
+    accountCreated: Boolean,
+    grantedCcxRole: Boolean,
+    sentPasswordReset: Boolean
+  }
 });
 
-module.exports = mongoose.Model('SurveyResponse', surveyResponseSchema);
+const SurveyResponse = mongoose.model('SurveyResponse', surveyResponseSchema);
+
+module.exports = SurveyResponse;

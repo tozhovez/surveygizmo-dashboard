@@ -7,27 +7,27 @@ module.exports = class FormResponses extends React.Component {
 
     this.state = {
       responses: []
-    }
+    };
   }
 
   getResponses() {
     const xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = () => {
-      if(xhr.readyState === 4 && xhr.status === 200) {
-        this.setState({responses: JSON.parse(xhr.responseText)});
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        this.setState({ responses: JSON.parse(xhr.responseText) });
       }
       else if (xhr.readyState === 4 && xhr.status !== 200) {
         throw new Error('Fetching responses failed');
       }
-    }
+    };
 
     xhr.open('GET', '/responses', true);
     xhr.send();
   }
 
   componentDidMount() {
-    this.getResponses()
+    this.getResponses();
   }
 
   render() {

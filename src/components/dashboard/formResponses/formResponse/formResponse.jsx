@@ -6,15 +6,15 @@ module.exports = class FormResponse extends React.Component {
 
     this.state = {
       approved: false
-    }
+    };
   }
 
   approveResponse() {
     const xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = () => {
-      if(xhr.readyState === 4 && xhr.status === 200) {
-        this.setState({approved: true});
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        this.setState({ approved: true });
       }
       else if (xhr.readyState === 4 && xhr.status !== 200) {
         throw new Error('Approve response failed');
@@ -31,10 +31,10 @@ module.exports = class FormResponse extends React.Component {
 
     return (
       <tr className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>
-        <td>{`${questions['First Name']} ${questions['Last Name']}`}</td>
-        <td>{questions['Email Address']}</td>
+        <td>{`${questions['Full name']}`}</td>
+        <td>{questions['Submitter Email']}</td>
         <td>{response.submittedAt}</td>
-        <td>{questions['Company Name']}</td>
+        <td>{questions.Organization}</td>
         <td>
           <button onClick={() => this.approveResponse()}>Approve</button>
         </td>
