@@ -14,7 +14,7 @@ const { authorize, storeAccessToken, logout } = require('edx-oauth-middleware').
   lmsUrl,
   edxLogoutUrl,
   client: config.client,
-  auth: config.auth,
+  auth: config.auth
 });
 
 router.get('/auth', authorize);
