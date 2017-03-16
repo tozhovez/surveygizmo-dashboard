@@ -5,13 +5,19 @@ const EdxApi = require('../lib/EdxApi');
 const router = express.Router();
 
 router.get('/', (req, res, next) =>
-  surveyGizmo.getData()
+  surveyGizmo.getResponseData()
+  .then(json => res.send(json))
+  .catch(error => next(error))
+);
+
+router.get('/:responseId', (req, res, next) =>
+  surveyGizmo.getResponseData(req.params.responseId)
   .then(json => res.send(json))
   .catch(error => next(error))
 );
 
 router.post('/:responseId/approve', (req, res, next) =>
-  surveyGizmo.getResponse(req.params.responseId)
+  surveyGizmo.getResponseData(req.params.responseId)
   .then(response => EdxApi.createAccount(response.questions))
   .then(account => EdxApi.grantCcxRole(account, req.session.token.access_token))
   .then(account => EdxApi.sendResetPasswordRequest(account))
