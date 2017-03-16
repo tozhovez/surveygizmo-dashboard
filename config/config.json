@@ -34,7 +34,11 @@
   "production": {
     "username": "root",
     "password": null,
-    "database": "surveygizmo_production",
+    "database": {
+      "host": "localhost",
+      "port": "27017",
+      "db": "surveygizmo"
+    },
     "host": "127.0.0.1",
     "dialect": "mysql",
     "baseUrl": "http://54.208.243.8",

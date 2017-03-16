@@ -8,16 +8,14 @@ const router = express.Router();
 
 router.get('/', (req, res, next) =>
   surveyGizmo.getData()
-  .then(json => {
-    res.send(json);
-  })
+  .then(json => res.send(json))
   .catch(error => next(error))
 );
 
 router.post('/:responseId/approve', (req, res, next) => {
   const data = {
     submittedAt: '',
-    questions: [],
+    questions: {},
     status: {
       accountCreated: false,
       grantedCcxRole: false,
@@ -27,11 +25,7 @@ router.post('/:responseId/approve', (req, res, next) => {
 
   surveyGizmo.getResponse(req.params.responseId)
   .then(response => {
-    data.contents = Object.keys(response.questions)
-      .map(key => ({
-        question: key,
-        answer: response.questions[key]
-      }));
+    data.contents = response.questions;
     data.submittedAt = response.submittedAt;
 
     return EdxApi.createAccount(response.questions);
