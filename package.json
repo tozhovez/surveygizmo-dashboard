@@ -9,6 +9,7 @@
     "watch": "watchify -d -t bubleify ./src/app.js -o ./public/javascripts/bundle.js -v"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "bluebird": "^3.5.0",
     "body-parser": "~1.16.0",
     "connect-redis": "^3.2.0",

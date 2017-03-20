@@ -1,19 +1,19 @@
-const Promise = require('bluebird');
-const request = Promise.promisifyAll(require('request').defaults({ jar: true }));
+const axios = require('axios');
 const { baseUrl, lmsPort } = require('../config/main');
 
 module.exports.getUserInfo = (req, res) => {
   const accessToken = req.session.token.access_token;
   const options = {
+    method: 'GET',
     url: `${baseUrl}:${lmsPort}/oauth2/user_info`,
     headers: {
       Authorization: `Bearer ${accessToken}`
     }
   };
 
-  request.getAsync(options)
+  axios(options)
   .then(response => {
-    req.session.user = JSON.parse(response.body); // eslint-disable-line
+    req.session.user = response.data; // eslint-disable-line
     res.redirect('/');
   })
   .catch(error => res.send(`Access Token Error ${error.message}`));
