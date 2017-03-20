@@ -43,4 +43,4 @@ const approveResponse = (req, res, next) => {
   .catch(error => next(error));
 };
 
-module.exports = { approveResponse }
+module.exports = { approveResponse };
