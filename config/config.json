@@ -13,6 +13,8 @@
     "lmsPort": 8000,
     "studioPort": 8001,
     "applicationPort": 3001,
+    "sgUrl": "https://restapi.surveygizmo.com/v4/survey",
+    "sgSurveyId": 3392617,
     "client": {
       "id": "sg-id",
       "secret": "sg-secret"
