@@ -71,4 +71,4 @@ module.exports = class FormResponses extends React.Component {
       </div>
     );
   }
-}
+};

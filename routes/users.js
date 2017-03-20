@@ -1,15 +1,14 @@
-var express = require('express');
-var router = express.Router();
-
+const express = require('express');
 const config = require('../config/main');
-const {getUserInfo} = require('../middlewares/auth');
-const lmsPort = config.lmsPort;
+const { getUserInfo } = require('../middlewares/auth');
+
+const router = express.Router();
 const loginUrl = `${config.baseUrl}:${config.applicationPort}/users/login`;
 const redirectOnLoginUrl = `${config.baseUrl}:${config.applicationPort}`;
 const lmsUrl = `${config.baseUrl}:${config.lmsPort}`;
 const edxLogoutUrl = `${config.baseUrl}:${config.lmsPort}/logout`;
 
-const {authorize, storeAccessToken, logout} = require('edx-oauth-middleware').init({
+const { authorize, storeAccessToken, logout } = require('edx-oauth-middleware').init({
   loginUrl,
   redirectOnLoginUrl,
   lmsUrl,
