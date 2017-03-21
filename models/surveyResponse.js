@@ -1,4 +1,4 @@
-const mongoose = require('../lib/Mongoose');
+const mongoose = require('../lib/mongoose');
 
 const surveyResponseSchema = mongoose.Schema({
   submittedAt: Date,
