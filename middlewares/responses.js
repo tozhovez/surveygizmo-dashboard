@@ -14,9 +14,9 @@ const approveResponse = (req, res, next) => {
     }
   });
 
-  surveyGizmo.getResponse(req.params.responseId)
+  surveyGizmo.getResponseData(req.params.responseId)
   .then(response => {
-    surveyResponse.contents = response.questions;
+    surveyResponse.questions = response.questions;
     surveyResponse.submittedAt = response.submittedAt;
 
     return surveyResponse.save().then(() => response);

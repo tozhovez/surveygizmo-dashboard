@@ -1,8 +1,8 @@
 const mongoose = require('../lib/mongoose');
 
 const surveyResponseSchema = mongoose.Schema({
-  submittedAt: Date,
-  contents: {},
+  submittedAt: String,
+  questions: {},
   status: {
     accountCreated: Boolean,
     grantedCcxRole: Boolean,
