@@ -9,10 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/bin/www",
-            "cwd": "${workspaceRoot}",
-            "env": {
-                "SG_KEY": "c41c1861678a685b4c53a1b3e778c16eaf9af45aeb1dc9c015"
-            }
+            "cwd": "${workspaceRoot}"
         }
     ]
 }
