@@ -4,9 +4,10 @@ const surveyResponseSchema = mongoose.Schema({
   submittedAt: String,
   questions: {},
   status: {
-    accountCreated: Boolean,
-    grantedCcxRole: Boolean,
-    sentPasswordReset: Boolean
+    accountCreated: { type: Date, default: null },
+    grantedCcxRole: { type: Date, default: null },
+    sentPasswordReset: { type: Date, default: null },
+    rejected: { type: Date, default: null }
   }
 });
 

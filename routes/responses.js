@@ -1,6 +1,7 @@
 const express = require('express');
 const surveyGizmo = require('../lib/SurveyGizmo');
-const { approveResponse } = require('../middlewares/responses');
+const Mailer = require('../lib/mailer');
+const { approveResponse, rejectResponse } = require('../middlewares/responses');
 
 const router = express.Router();
 
@@ -17,5 +18,7 @@ router.get('/:responseId', (req, res, next) =>
 );
 
 router.post('/:responseId/approve', approveResponse);
+
+router.post('/:responseId/reject', rejectResponse);
 
 module.exports = router;

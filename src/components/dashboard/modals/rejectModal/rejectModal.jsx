@@ -1,10 +1,10 @@
 const React = require('react');
 
-module.exports = class ApproveModal extends React.Component {
+module.exports = class RejectModal extends React.Component {
   constructor() {
     super();
 
-    this.approveResponse = this.approveResponse.bind(this);
+    this.rejectResponse = this.rejectResponse.bind(this);
     this.close = this.close.bind(this);
     this.updateEmailContent = this.updateEmailContent.bind(this);
 
@@ -14,9 +14,10 @@ module.exports = class ApproveModal extends React.Component {
     };
   }
 
-  approveResponse() {
+  rejectResponse() {
     const xhr = new XMLHttpRequest();
     const data = {
+      email: this.props.response.questions['Submitter Email'],
       emailContent: this.state.emailContent
     };
 
@@ -26,11 +27,11 @@ module.exports = class ApproveModal extends React.Component {
         this.close();
       }
       else if (xhr.readyState === 4 && xhr.status !== 200) {
-        throw new Error('Approve response failed');
+        throw new Error('Reject response failed');
       }
     };
 
-    xhr.open('POST', `/responses/${this.props.response.id}/approve`, true);
+    xhr.open('POST', `/responses/${this.props.response.id}/reject`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
   }
@@ -50,8 +51,7 @@ module.exports = class ApproveModal extends React.Component {
       this.setState({
         open: !!nextProps.response,
         emailContent: `Dear ${nextProps.response && nextProps.response.questions['Full name']},
-we have approved your account.
-Go to edx and log in.`
+we have rejected your account.`
       });
     }
   }
@@ -65,7 +65,7 @@ Go to edx and log in.`
           Close
         </button>
         <div className="approve-modal-content">
-          <h1>Approve application for {response.questions['Full name']}?</h1>
+          <h1>Reject application for {response.questions['Full name']}?</h1>
           <label htmlFor="">
             The following email will be sent to {response.questions['Submitter Email']}:
           </label>
@@ -74,15 +74,8 @@ Go to edx and log in.`
             onChange={this.updateEmailContent}
             value={this.state.emailContent}
           />
-          <button onClick={this.approveResponse}>Yes</button>
+          <button onClick={this.rejectResponse}>Yes</button>
           <button onClick={this.close}>No</button>
-          <hr/>
-          <br/>
-          <p>
-            <b>WARNING</b>: Approving this application will
-            create a user account for this person and
-            grant them CCX Coach role on your course.
-          </p>
         </div>
       </div>
     );

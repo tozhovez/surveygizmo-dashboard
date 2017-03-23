@@ -8,7 +8,7 @@ const compileSass = require('express-compile-sass');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const config = require('./config/main');
-const {skipWhitelistedRoutes, getEmailFromSession} = require('./lib/helpers')
+const { skipWhitelistedRoutes, getEmailFromSession } = require('./lib/helpers')
 const index = require('./routes/index');
 const users = require('./routes/users');
 const responses = require('./routes/responses');
@@ -22,17 +22,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(compileSass({
-    root: process.cwd(),
-    sourceMap: false, // Includes Base64 encoded source maps in output css
-    sourceComments: false, // Includes source comments in output css
-    watchFiles: true, // Watches sass files and updates mtime on main files for each change
-    logToConsole: true // If true, will log to console.error on errors
+  root: process.cwd(),
+  sourceMap: false, // Includes Base64 encoded source maps in output css
+  sourceComments: false, // Includes source comments in output css
+  watchFiles: true, // Watches sass files and updates mtime on main files for each change
+  logToConsole: true // If true, will log to console.error on errors
 }));
 
 app.use(session({
@@ -55,14 +55,14 @@ app.use('/users', users);
 app.use('/responses', responses);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -23,6 +23,12 @@
     padding: 3rem;
     background: white;
 
+    textarea {
+      width: 100%;
+      resize: none;
+      padding: 1rem;
+    }
+
     button {
       width: 170px;
       height: 50px;

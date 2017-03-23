@@ -28,6 +28,14 @@
       "key": "key",
       "secret": "secret"
     },
+    "mail": {
+      "host": "192.168.33.10",
+      "port": 25,
+      "secure": false,
+      "tls": {
+        "rejectUnauthorized": false
+      }
+    },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
     "whitelistRoutes": ["/users/auth", "/users/login"],
@@ -61,6 +69,14 @@
     "lti": {
       "key": "key",
       "secret": "secret"
+    },
+    "mail": {
+      "host": "localhost",
+      "port": 25,
+      "secure": false,
+      "tls": {
+        "rejectUnauthorized": false
+      }
     },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
