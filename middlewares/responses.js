@@ -29,7 +29,7 @@ const approveResponse = (req, res, next) => {
   .then(response => EdxApi.createAccount(response.questions))
   .then(account => {
     surveyResponse.status.accountCreated = new Date();
-
+    debugger;
     return surveyResponse.save().then(() => account);
   })
   .then(account => EdxApi.grantCcxRole(account, req.session.token.access_token))
@@ -41,7 +41,7 @@ const approveResponse = (req, res, next) => {
   .then(account => EdxApi.sendResetPasswordRequest(account))
   .then(account => {
     surveyResponse.status.sentPasswordReset = new Date();
-
+    console.log(account);
     return surveyResponse.save().then(() => account);
   })
   .then(account => Mailer.send({
