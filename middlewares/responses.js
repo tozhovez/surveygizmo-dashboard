@@ -6,6 +6,7 @@ const SurveyResponse = require('../models/surveyResponse');
 
 const approveResponse = (req, res, next) => {
   const surveyResponse = new SurveyResponse({
+    responseId: 0,
     submittedAt: '',
     questions: {},
     status: {
@@ -19,8 +20,9 @@ const approveResponse = (req, res, next) => {
 
   surveyGizmo.getResponseData(req.params.responseId)
   .then(response => {
-    surveyResponse.questions = response.questions;
+    surveyResponse.responseId = response.id;
     surveyResponse.submittedAt = response.submittedAt;
+    surveyResponse.questions = response.questions;
 
     return surveyResponse.save().then(() => response);
   })

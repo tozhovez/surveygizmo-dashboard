@@ -1,6 +1,5 @@
 const express = require('express');
 const surveyGizmo = require('../lib/SurveyGizmo');
-const Mailer = require('../lib/mailer');
 const { approveResponse, rejectResponse } = require('../middlewares/responses');
 
 const router = express.Router();

@@ -11,7 +11,7 @@ module.exports = class FormResponse extends React.Component {
 
   render() {
     const { response, showApproveModal, showRejectModal } = this.props;
-    const { questions } = response;
+    const { questions, status } = response;
 
     return (
       <tr className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>

@@ -1,6 +1,7 @@
 const mongoose = require('../lib/mongoose');
 
 const surveyResponseSchema = mongoose.Schema({
+  responseId: Number,
   submittedAt: String,
   questions: {},
   status: {
