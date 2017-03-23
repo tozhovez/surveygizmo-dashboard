@@ -38,3 +38,6 @@ jspm_packages
 
 # Bundled javascripts
 public/javascripts
+
+# Visual Studio Code stuff
+.vscode/

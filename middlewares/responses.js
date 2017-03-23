@@ -6,6 +6,7 @@ const SurveyResponse = require('../models/surveyResponse');
 
 const approveResponse = (req, res, next) => {
   const surveyResponse = new SurveyResponse({
+    responseId: 0,
     submittedAt: '',
     questions: {},
     status: {
@@ -19,15 +20,15 @@ const approveResponse = (req, res, next) => {
 
   surveyGizmo.getResponseData(req.params.responseId)
   .then(response => {
-    surveyResponse.questions = response.questions;
+    surveyResponse.responseId = response.id;
     surveyResponse.submittedAt = response.submittedAt;
+    surveyResponse.questions = response.questions;
 
     return surveyResponse.save().then(() => response);
   })
   .then(response => EdxApi.createAccount(response.questions))
   .then(account => {
     surveyResponse.status.accountCreated = new Date();
-
     return surveyResponse.save().then(() => account);
   })
   .then(account => EdxApi.grantCcxRole(account, req.session.token.access_token))
@@ -39,7 +40,6 @@ const approveResponse = (req, res, next) => {
   .then(account => EdxApi.sendResetPasswordRequest(account))
   .then(account => {
     surveyResponse.status.sentPasswordReset = new Date();
-
     return surveyResponse.save().then(() => account);
   })
   .then(account => Mailer.send({

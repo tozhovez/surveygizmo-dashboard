@@ -9,6 +9,27 @@ module.exports = class FormResponse extends React.Component {
     };
   }
 
+  getStatusString() {
+    const { status } = this.props.response;
+
+    if (typeof status === 'undefined') {
+      return 'Pending';
+    }
+    else if (status.rejected) {
+      return 'Rejected';
+    }
+    else if (
+      status.sentPasswordReset &&
+      status.grantedCcxRole &&
+      status.accountCreated
+    ) {
+      return 'Approved';
+    }
+    else {
+      return 'Error. Stuck in limbo.';
+    }
+  }
+
   render() {
     const { response, showApproveModal, showRejectModal } = this.props;
     const { questions } = response;
@@ -19,6 +40,7 @@ module.exports = class FormResponse extends React.Component {
         <td>{questions['Submitter Email']}</td>
         <td>{questions.Organization}</td>
         <td>{(new Date(response.submittedAt)).toLocaleDateString()}</td>
+        <td>{this.getStatusString()}</td>
         <td>
           <button onClick={() => showApproveModal(response)}>Approve</button>
           <button onClick={() => showRejectModal(response)}>Reject</button>

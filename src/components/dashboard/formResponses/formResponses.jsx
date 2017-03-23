@@ -66,6 +66,7 @@ module.exports = class FormResponses extends React.Component {
               <td>Email</td>
               <td>Company Name</td>
               <td>Submitted at</td>
+              <td>Status</td>
               <td>Actions</td>
             </tr>
           </thead>
