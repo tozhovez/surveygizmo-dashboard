@@ -70,19 +70,20 @@ module.exports = class FormResponses extends React.Component {
     let filteredResponses = [];
 
     if (search) {
-      filteredResponses = responses.filter(r => {
-        return r.questions && (
+      filteredResponses = responses.filter(r =>
+        r.questions &&
+        (
           (r.questions['Full name'].toLowerCase()).indexOf(search.toLowerCase()) >= 0 ||
           (r.questions['Submitter Email'].toLowerCase()).indexOf(search.toLowerCase()) >= 0 ||
           (r.questions['Organization'].toLowerCase()).indexOf(search.toLowerCase()) >= 0
-        );
-      });
+        )
+      );
     }
     else {
       filteredResponses = responses;
     }
 
-    if (filter && filter === 'pending') {
+    if (filter === 'pending') {
       filteredResponses = filteredResponses.filter(r => !r.status);
     }
     else if (filter) {
