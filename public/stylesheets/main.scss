@@ -64,6 +64,35 @@ button {
   font-weight: 600;
 }
 
+.stats {
+  margin: auto;
+  text-align: center;
+  background: $secondary-color;
+  padding: 2em 0;
+
+  h1 {
+    color: $accent-color;
+  }
+
+  span {
+    display: inline-block;
+    width: 33%;
+  }
+
+  input[type=search] {
+    margin: 2em auto 1em;
+    padding: .4em;
+    width: 300px;
+    height: 40px;
+  }
+
+  select {
+    margin: 0 1em;
+    height: 40px;
+  }
+}
+
+
 table.form-responses {
   border: 1px solid $secondary-color;
   border-collapse: collapse;

@@ -40,4 +40,4 @@ jspm_packages
 public/javascripts
 
 # Visual Studio Code stuff
-.vscode/
+.vscode
