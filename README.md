@@ -9,7 +9,8 @@ This utilizes SG API for fetching responses and question details.
 4. Go to http://localhost:3001
 
 # Survey Gizmo API key
-If SG_KEY env variable is not present, we serve data from json files in static folder. If we have SG_KEY, make sure to update survey ID in SurveyGizmo.js to fetch data from your survey.
+```export SG_KEY=<your_survey_gizmo_api_key>```
+Also make sure to update sgSurveyId in config.json to fetch data from your survey.
 
 # edX
 This app authenticates users with edX OAuth2 provider. You need to have edX instance set up and LMS running with OAuth configuration for this app.
