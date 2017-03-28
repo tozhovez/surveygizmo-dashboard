@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -8,10 +8,11 @@ const compileSass = require('express-compile-sass');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const config = require('./config/main');
-const { skipWhitelistedRoutes, getEmailFromSession } = require('./lib/helpers')
+const { skipWhitelistedRoutes, getEmailFromSession } = require('./lib/helpers');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const responses = require('./routes/responses');
+const { requiresStaffRole } = require('./middlewares/auth');
 
 const app = express();
 
@@ -45,8 +46,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(skipWhitelistedRoutes(redirectAnonymous));
 
+app.use(skipWhitelistedRoutes(requiresStaffRole));
+
 app.use((req, _, next) => {
-  app.locals.email = req.email = getEmailFromSession(req);
+  app.locals.email = req.email = getEmailFromSession(req); // eslint-disable-line
   next();
 });
 
@@ -62,7 +65,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
