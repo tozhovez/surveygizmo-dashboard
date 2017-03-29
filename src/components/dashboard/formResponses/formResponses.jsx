@@ -149,8 +149,6 @@ module.exports = class FormResponses extends React.Component {
                   key={`form-response-${response.id}`}
                   response={response}
                   viewResponse={this.viewResponse}
-                  showApproveModal={this.showApproveModal}
-                  showRejectModal={this.showRejectModal}
                 />
               )
             }

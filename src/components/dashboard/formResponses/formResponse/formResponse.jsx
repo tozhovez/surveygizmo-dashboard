@@ -33,7 +33,7 @@ module.exports = class FormResponse extends React.Component {
   }
 
   render() {
-    const { response, viewResponse, showApproveModal, showRejectModal } = this.props;
+    const { response, viewResponse } = this.props;
     const { questions } = response;
 
     return (
