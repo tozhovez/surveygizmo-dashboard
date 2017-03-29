@@ -16,6 +16,7 @@ module.exports = class FormResponse extends React.Component {
       return 'Pending';
     }
     else if (status.rejected) {
+      this.setState({ approved: false });
       return 'Rejected';
     }
     else if (
@@ -23,6 +24,7 @@ module.exports = class FormResponse extends React.Component {
       status.grantedCcxRole &&
       status.accountCreated
     ) {
+      this.setState({ approved: true });
       return 'Approved';
     }
     else {
@@ -31,7 +33,7 @@ module.exports = class FormResponse extends React.Component {
   }
 
   render() {
-    const { response, showApproveModal, showRejectModal } = this.props;
+    const { response, viewResponse, showApproveModal, showRejectModal } = this.props;
     const { questions } = response;
 
     return (
@@ -42,8 +44,7 @@ module.exports = class FormResponse extends React.Component {
         <td>{(new Date(response.submittedAt)).toLocaleDateString()}</td>
         <td>{this.getStatusString()}</td>
         <td>
-          <button onClick={() => showApproveModal(response)}>Approve</button>
-          <button onClick={() => showRejectModal(response)}>Reject</button>
+          <button onClick={() => viewResponse(response)}>View</button>
         </td>
       </tr>
     );

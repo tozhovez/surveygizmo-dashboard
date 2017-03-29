@@ -1,5 +1,6 @@
 const React = require('react');
 const FormResponse = require('./formResponse/formResponse.jsx');
+const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
 const RejectModal = require('../modals/rejectModal/rejectModal.jsx');
 
@@ -7,9 +8,11 @@ module.exports = class FormResponses extends React.Component {
   constructor() {
     super();
 
+    this.viewResponse = this.viewResponse.bind(this);
     this.showApproveModal = this.showApproveModal.bind(this);
     this.showRejectModal = this.showRejectModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.closeDetails = this.closeDetails.bind(this);
     this.search = this.search.bind(this);
     this.filter = this.filter.bind(this);
 
@@ -17,6 +20,7 @@ module.exports = class FormResponses extends React.Component {
       search: '',
       filter: '',
       responses: [],
+      viewResponse: null,
       approveResponse: null,
       rejectResponse: null
     };
@@ -38,6 +42,10 @@ module.exports = class FormResponses extends React.Component {
     xhr.send();
   }
 
+  viewResponse(viewResponse) {
+    this.setState({ viewResponse });
+  }
+
   showApproveModal(approveResponse) {
     this.setState({ approveResponse });
   }
@@ -50,6 +58,12 @@ module.exports = class FormResponses extends React.Component {
     this.setState({
       rejectResponse: null,
       approveResponse: null
+    });
+  }
+
+  closeDetails() {
+    this.setState({
+      viewResponse: null
     });
   }
 
@@ -66,7 +80,7 @@ module.exports = class FormResponses extends React.Component {
   }
 
   render() {
-    const { responses, approveResponse, rejectResponse, search, filter } = this.state;
+    const { responses, viewResponse, approveResponse, rejectResponse, search, filter } = this.state;
     let filteredResponses = [];
 
     if (search) {
@@ -134,6 +148,7 @@ module.exports = class FormResponses extends React.Component {
                 <FormResponse
                   key={`form-response-${response.id}`}
                   response={response}
+                  viewResponse={this.viewResponse}
                   showApproveModal={this.showApproveModal}
                   showRejectModal={this.showRejectModal}
                 />
@@ -141,6 +156,13 @@ module.exports = class FormResponses extends React.Component {
             }
           </tbody>
         </table>
+
+        <FormResponseDetails
+          response={viewResponse}
+          close={this.closeDetails}
+          showApproveModal={this.showApproveModal}
+          showRejectModal={this.showRejectModal}
+        />
 
         <ApproveModal response={approveResponse} close={this.closeModal} />
         <RejectModal response={rejectResponse} close={this.closeModal} />
