@@ -11,28 +11,14 @@ class ResponsesStore extends EventEmitter {
     this.viewResponse = null;
     this.approveResponse = null;
     this.rejectResponse = null;
-    this.loadResponses();
-  }
-
-  loadResponses() {
-    const xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        this.responses = JSON.parse(xhr.responseText);
-        this.emitChange();
-      }
-      else if (xhr.readyState === 4 && xhr.status !== 200) {
-        throw new Error('Fetching responses failed');
-      }
-    };
-
-    xhr.open('GET', '/responses', true);
-    xhr.send();
   }
 
   getResponses() {
     return this.responses;
+  }
+
+  setResponses(responses) {
+    this.responses = responses;
   }
 
   getViewResponse() {
@@ -43,11 +29,11 @@ class ResponsesStore extends EventEmitter {
     this.viewResponse = response;
   }
 
-  approveResponse(response) {
+  setApproveResponse(response) {
     this.approveResponse = response;
   }
 
-  rejectResponse(response) {
+  setRejectResponse(response) {
     this.rejectResponse = response;
   }
 
@@ -78,16 +64,20 @@ dispatcher.register(payload => {
   }
 
   switch (action.actionType) {
+    case responseConstants.SET_RESPONSES:
+      responsesStore.setResponses(action.data);
+      break;
+
     case responseConstants.VIEW_RESPONSE:
       responsesStore.setViewResponse(action.data);
       break;
 
     case responseConstants.APPROVE_RESPONSE:
-      responsesStore.approveResponse(action.data);
+      responsesStore.setApproveResponse(action.data);
       break;
 
     case responseConstants.REJECT_RESPONSE:
-      responsesStore.rejectResponse(action.data);
+      responsesStore.setRejectResponse(action.data);
       break;
 
     default:

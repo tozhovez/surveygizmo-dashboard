@@ -3,6 +3,8 @@ $secondary-color: #9B9EA0;
 $accent-color: #F76B1C;
 
 @import 'approveModal';
+@import 'formResponses';
+@import 'footer';
 
 *, html, body {
   padding: 0;

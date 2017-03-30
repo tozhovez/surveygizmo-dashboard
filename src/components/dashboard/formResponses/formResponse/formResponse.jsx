@@ -1,7 +1,7 @@
 const React = require('react');
 const responseActions = require('../../../../actions/response');
 
-module.exports = class FormResponse extends React.Component {
+class FormResponse extends React.PureComponent {
   constructor() {
     super();
 
@@ -28,9 +28,7 @@ module.exports = class FormResponse extends React.Component {
       // this.setState({ approved: true });
       return 'Approved';
     }
-    else {
-      return 'Error. Stuck in limbo.';
-    }
+    return 'Error. Stuck in limbo.';
   }
 
   render() {
@@ -51,3 +49,10 @@ module.exports = class FormResponse extends React.Component {
     );
   }
 }
+
+FormResponse.propTypes = {
+  response: React.PropTypes.object.isRequired, // eslint-disable-line
+  viewResponse: React.PropTypes.func.isRequired
+};
+
+module.exports = FormResponse;

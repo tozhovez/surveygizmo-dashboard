@@ -1,11 +1,15 @@
+/* eslint-disable */
+
 const React = require('react');
+const ReactPaginate = require('react-paginate');
 const FormResponse = require('./formResponse/formResponse.jsx');
 const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
 const RejectModal = require('../modals/rejectModal/rejectModal.jsx');
 const responsesStore = require('../../../stores/responses');
+const responseActions = require('../../../actions/response');
 
-module.exports = class FormResponses extends React.Component {
+class FormResponses extends React.PureComponent {
   constructor() {
     super();
 
@@ -17,6 +21,7 @@ module.exports = class FormResponses extends React.Component {
     this.closeDetails = this.closeDetails.bind(this);
     this.search = this.search.bind(this);
     this.filter = this.filter.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
 
     this.state = {
       search: '',
@@ -24,8 +29,15 @@ module.exports = class FormResponses extends React.Component {
       responses: [],
       viewResponse: null,
       approveResponse: null,
-      rejectResponse: null
+      rejectResponse: null,
+      currentPage: 1
     };
+  }
+
+  handlePageClick(data) {
+    const pageIndex = data.selected + 1;
+    this.setState({currentPage: pageIndex});
+    responseActions.loadResponses(pageIndex);
   }
 
   viewResponse(viewResponse) {
@@ -62,14 +74,17 @@ module.exports = class FormResponses extends React.Component {
   }
 
   onStoreChange() {
+    const responseData = responsesStore.getResponses(this.state.currentPage);
     this.setState({
-      responses: responsesStore.getResponses()
+      responses: responseData.data,
+      currentPage: responseData.currentPage,
+      pageCount: responseData.pageCount
     });
   }
 
   componentDidMount() {
-    // this.getResponses();
     responsesStore.addChangeListener(this.onStoreChange);
+    responseActions.loadResponses(this.state.currentPage);
   }
 
   componentWillUnmount() {
@@ -151,6 +166,14 @@ module.exports = class FormResponses extends React.Component {
             }
           </tbody>
         </table>
+        <div className='pagination'>
+          <ReactPaginate
+            pageCount={this.state.pageCount}
+            onPageChange={this.handlePageClick}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={2}
+          />
+        </div>
 
         <FormResponseDetails
           response={viewResponse}
@@ -165,3 +188,5 @@ module.exports = class FormResponses extends React.Component {
     );
   }
 };
+
+module.exports = FormResponses;
