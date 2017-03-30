@@ -1,12 +1,12 @@
 const React = require('react');
 const FormResponses = require('./formResponses/formResponses.jsx');
+const Footer = require('./footer.jsx');
 
-module.exports = class Dashboard extends React.Component {
-  render() {
-    return (
-      <div>
-        <FormResponses />
-      </div>
-    )
-  }
-}
+const Dashboard = () => (
+  <div>
+    <FormResponses />
+    <Footer />
+  </div>
+);
+
+module.exports = Dashboard;

@@ -1,10 +1,13 @@
+/* eslint-disable */
+
 const React = require('react');
+const ReactPaginate = require('react-paginate');
 const FormResponse = require('./formResponse/formResponse.jsx');
 const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
 const RejectModal = require('../modals/rejectModal/rejectModal.jsx');
 
-module.exports = class FormResponses extends React.Component {
+class FormResponses extends React.PureComponent {
   constructor() {
     super();
 
@@ -15,6 +18,8 @@ module.exports = class FormResponses extends React.Component {
     this.closeDetails = this.closeDetails.bind(this);
     this.search = this.search.bind(this);
     this.filter = this.filter.bind(this);
+    this.getPageData = this.getPageData.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
 
     this.state = {
       search: '',
@@ -22,7 +27,8 @@ module.exports = class FormResponses extends React.Component {
       responses: [],
       viewResponse: null,
       approveResponse: null,
-      rejectResponse: null
+      rejectResponse: null,
+      currentPage: 1
     };
   }
 
@@ -31,7 +37,13 @@ module.exports = class FormResponses extends React.Component {
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        this.setState({ responses: JSON.parse(xhr.responseText) });
+        const data = JSON.parse(xhr.responseText);
+
+        this.setState({
+          responses: data.data,
+          currentPage: data.currentPage,
+          pageCount: data.pageCount
+        });
       }
       else if (xhr.readyState === 4 && xhr.status !== 200) {
         throw new Error('Fetching responses failed');
@@ -40,6 +52,33 @@ module.exports = class FormResponses extends React.Component {
 
     xhr.open('GET', '/responses', true);
     xhr.send();
+  }
+
+  getPageData() {
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+
+        this.setState({
+          responses: data.data
+        });
+      }
+      else if (xhr.readyState === 4 && xhr.status !== 200) {
+        throw new Error('Fetching responses failed');
+      }
+    };
+    xhr.open('GET', `/responses/page/${this.state.currentPage}`, true);
+    xhr.send();
+  }
+
+  handlePageClick(data) {
+    const selected = data.selected + 1;
+
+    this.setState({ currentPage: selected }, () => {
+      this.getPageData();
+    });
   }
 
   viewResponse(viewResponse) {
@@ -154,6 +193,14 @@ module.exports = class FormResponses extends React.Component {
             }
           </tbody>
         </table>
+        <div className='pagination'>
+          <ReactPaginate
+            pageCount={this.state.pageCount}
+            onPageChange={this.handlePageClick}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={2}
+          />
+        </div>
 
         <FormResponseDetails
           response={viewResponse}
@@ -168,3 +215,5 @@ module.exports = class FormResponses extends React.Component {
     );
   }
 };
+
+module.exports = FormResponses;
