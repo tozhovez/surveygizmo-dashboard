@@ -3,11 +3,13 @@ const FormResponse = require('./formResponse/formResponse.jsx');
 const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
 const RejectModal = require('../modals/rejectModal/rejectModal.jsx');
+const responsesStore = require('../../../stores/responses');
 
 module.exports = class FormResponses extends React.Component {
   constructor() {
     super();
 
+    this.onStoreChange = this.onStoreChange.bind(this);
     this.viewResponse = this.viewResponse.bind(this);
     this.showApproveModal = this.showApproveModal.bind(this);
     this.showRejectModal = this.showRejectModal.bind(this);
@@ -24,22 +26,6 @@ module.exports = class FormResponses extends React.Component {
       approveResponse: null,
       rejectResponse: null
     };
-  }
-
-  getResponses() {
-    const xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        this.setState({ responses: JSON.parse(xhr.responseText) });
-      }
-      else if (xhr.readyState === 4 && xhr.status !== 200) {
-        throw new Error('Fetching responses failed');
-      }
-    };
-
-    xhr.open('GET', '/responses', true);
-    xhr.send();
   }
 
   viewResponse(viewResponse) {
@@ -75,8 +61,19 @@ module.exports = class FormResponses extends React.Component {
     this.setState({ filter: event.target.value });
   }
 
+  onStoreChange() {
+    this.setState({
+      responses: responsesStore.getResponses()
+    });
+  }
+
   componentDidMount() {
-    this.getResponses();
+    // this.getResponses();
+    responsesStore.addChangeListener(this.onStoreChange);
+  }
+
+  componentWillUnmount() {
+    responsesStore.removeChangeListener(this.onStoreChange);
   }
 
   render() {

@@ -1,4 +1,5 @@
 const React = require('react');
+const responsesStore = require('../../../../stores/responses');
 
 module.exports = class FormResponseDetails extends React.Component {
   constructor() {
@@ -10,7 +11,7 @@ module.exports = class FormResponseDetails extends React.Component {
   }
 
   getStatusString() {
-    const { status } = this.props.response;
+    const { status } = responsesStore.getViewResponse();
 
     if (typeof status === 'undefined') {
       return 'Pending';
@@ -33,9 +34,10 @@ module.exports = class FormResponseDetails extends React.Component {
   }
 
   render() {
-    if (!this.props.response) return null;
+    const response = responsesStore.getViewResponse();
+    if (!response) return null;
 
-    const { response, showApproveModal, showRejectModal, close } = this.props;
+    const { showApproveModal, showRejectModal, close } = this.props;
     const { questions } = response;
 
     return (

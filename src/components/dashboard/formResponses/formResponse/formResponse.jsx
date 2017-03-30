@@ -1,4 +1,5 @@
 const React = require('react');
+const responseActions = require('../../../../actions/response');
 
 module.exports = class FormResponse extends React.Component {
   constructor() {
@@ -16,7 +17,7 @@ module.exports = class FormResponse extends React.Component {
       return 'Pending';
     }
     else if (status.rejected) {
-      this.setState({ approved: false });
+      // this.setState({ approved: false });
       return 'Rejected';
     }
     else if (
@@ -24,7 +25,7 @@ module.exports = class FormResponse extends React.Component {
       status.grantedCcxRole &&
       status.accountCreated
     ) {
-      this.setState({ approved: true });
+      // this.setState({ approved: true });
       return 'Approved';
     }
     else {
@@ -33,7 +34,7 @@ module.exports = class FormResponse extends React.Component {
   }
 
   render() {
-    const { response, viewResponse } = this.props;
+    const { response } = this.props;
     const { questions } = response;
 
     return (
@@ -44,7 +45,7 @@ module.exports = class FormResponse extends React.Component {
         <td>{(new Date(response.submittedAt)).toLocaleDateString()}</td>
         <td>{this.getStatusString()}</td>
         <td>
-          <button onClick={() => viewResponse(response)}>View</button>
+          <button onClick={() => responseActions.viewResponse(response)}>View</button>
         </td>
       </tr>
     );
