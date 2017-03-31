@@ -10,29 +10,6 @@ module.exports = class FormResponseDetails extends React.Component {
     };
   }
 
-  getStatusString() {
-    const { status } = responsesStore.getViewResponse();
-
-    if (typeof status === 'undefined') {
-      return 'Pending';
-    }
-    else if (status.rejected) {
-      this.setState({ approved: false });
-      return 'Rejected';
-    }
-    else if (
-      status.sentPasswordReset &&
-      status.grantedCcxRole &&
-      status.accountCreated
-    ) {
-      this.setState({ approved: true });
-      return 'Approved';
-    }
-    else {
-      return 'Error. Stuck in limbo.';
-    }
-  }
-
   render() {
     const response = responsesStore.getViewResponse();
     if (!response) return null;
@@ -44,7 +21,7 @@ module.exports = class FormResponseDetails extends React.Component {
       <div className="form-response-details">
         <div className="content">
           <h1>
-            {this.getStatusString()}
+            {response.statusString}
           </h1>
           {
             Object.keys(questions).map(key =>

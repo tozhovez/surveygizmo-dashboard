@@ -8,6 +8,7 @@ class ResponseActions {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         const responses = JSON.parse(xhr.responseText);
+
         dispatcher.handleAction({
           actionType: responseConstants.SET_RESPONSES,
           data: responses
@@ -27,6 +28,28 @@ class ResponseActions {
       actionType: responseConstants.VIEW_RESPONSE,
       data: response
     });
+  }
+
+  approveResponse(response, emailContent) {
+    const xhr = new XMLHttpRequest();
+    const data = { emailContent };
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const surveyResponse = JSON.parse(xhr.responseText);
+        dispatcher.handleAction({
+          actionType: responseConstants.APPROVE_RESPONSE,
+          data: surveyResponse
+        });
+      }
+      else if (xhr.readyState === 4 && xhr.status !== 200) {
+        throw new Error('Approve response failed');
+      }
+    };
+
+    xhr.open('POST', `/responses/${response.id}/approve`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
   }
 }
 

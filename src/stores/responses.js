@@ -8,17 +8,26 @@ class ResponsesStore extends EventEmitter {
   constructor() {
     super();
     this.responses = [];
+    this.responsesTotalCount = 0;
     this.viewResponse = null;
     this.approveResponse = null;
     this.rejectResponse = null;
   }
 
   getResponses() {
-    return this.responses;
+    return this.responses.map(r => {
+      r.statusString = getStatusString(r);
+      return r;
+    });
+  }
+
+  getTotalCount() {
+    return this.responsesTotalCount;
   }
 
   setResponses(responses) {
-    this.responses = responses;
+    this.responses = responses.data;
+    this.responsesTotalCount = responses.pageCount;
   }
 
   getViewResponse() {
@@ -29,8 +38,16 @@ class ResponsesStore extends EventEmitter {
     this.viewResponse = response;
   }
 
-  setApproveResponse(response) {
-    this.approveResponse = response;
+  approveResponse(approvedResponse) {
+    const response = this.responses.find(r => r.id === approvedResponse.id);
+    if (response.status) {
+      response.status.resetEmailSent = new Date();
+    }
+    else {
+      response.status = {
+        resetEmailSent: new Date()
+      };
+    }
   }
 
   setRejectResponse(response) {
@@ -89,5 +106,26 @@ dispatcher.register(payload => {
 
   return true;
 });
+
+// helpers
+
+function getStatusString(response) {
+  const { status } = response;
+
+  if (typeof status === 'undefined') {
+    return 'Pending';
+  }
+  else if (status.rejected) {
+    return 'Rejected';
+  }
+  else if (
+    status.sentPasswordReset &&
+    status.grantedCcxRole &&
+    status.accountCreated
+  ) {
+    return 'Approved';
+  }
+  return 'Error. Stuck in limbo.';
+}
 
 module.exports = responsesStore;

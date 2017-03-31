@@ -1,4 +1,5 @@
 const React = require('react');
+const responseActions = require('../../../../actions/response');
 
 module.exports = class ApproveModal extends React.Component {
   constructor() {
@@ -15,24 +16,10 @@ module.exports = class ApproveModal extends React.Component {
   }
 
   approveResponse() {
-    const xhr = new XMLHttpRequest();
-    const data = {
-      emailContent: this.state.emailContent
-    };
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        this.setState({ approved: true });
-        this.close();
-      }
-      else if (xhr.readyState === 4 && xhr.status !== 200) {
-        throw new Error('Approve response failed');
-      }
-    };
-
-    xhr.open('POST', `/responses/${this.props.response.id}/approve`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(data));
+    responseActions.approveResponse(
+      this.props.response,
+      this.state.emailContent
+    );
   }
 
   close() {

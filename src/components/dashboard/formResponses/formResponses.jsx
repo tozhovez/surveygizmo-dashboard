@@ -74,11 +74,9 @@ class FormResponses extends React.PureComponent {
   }
 
   onStoreChange() {
-    const responseData = responsesStore.getResponses(this.state.currentPage);
     this.setState({
-      responses: responseData.data,
-      currentPage: responseData.currentPage,
-      pageCount: responseData.pageCount
+      responses: responsesStore.getResponses(this.state.currentPage),
+      pageCount: responsesStore.getTotalCount()
     });
   }
 

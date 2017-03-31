@@ -48,7 +48,7 @@ const approveResponse = (req, res, next) => {
     text: emailContent,
     html: emailContent }).then(() => account)
   )
-  .then(account => res.send(account.username))
+  .then(() => res.send(surveyResponse))
   .catch(error => next(error));
 };
 
