@@ -10,8 +10,6 @@ class ResponsesStore extends EventEmitter {
     this.responses = [];
     this.responsesTotalCount = 0;
     this.viewResponse = null;
-    this.approveResponse = null;
-    this.rejectResponse = null;
   }
 
   getResponses() {
@@ -34,24 +32,38 @@ class ResponsesStore extends EventEmitter {
     return this.viewResponse;
   }
 
+  removeViewResponse() {
+    this.viewResponse = null;
+  }
+
   setViewResponse(response) {
     this.viewResponse = response;
   }
 
-  approveResponse(approvedResponse) {
-    const response = this.responses.find(r => r.id === approvedResponse.id);
+  setResponseApproved(approvedResponse) {
+    const response = this.responses.find(r => r.id == approvedResponse.responseId);
     if (response.status) {
-      response.status.resetEmailSent = new Date();
+      response.status.sentPasswordReset = Date.now();
     }
     else {
       response.status = {
-        resetEmailSent: new Date()
+        sentPasswordReset: Date.now(),
+        grantedCcxRole: Date.now(),
+        accountCreated: Date.now()
       };
     }
   }
 
-  setRejectResponse(response) {
-    this.rejectResponse = response;
+  setResponseRejected(rejectedResponse) {
+    const response = this.responses.find(r => r.id == rejectedResponse.responseId);
+    if (response.status) {
+      response.status.rejected = Date.now();
+    }
+    else {
+      response.status = {
+        rejected: Date.now()
+      };
+    }
   }
 
   // generic store stuff
@@ -89,12 +101,16 @@ dispatcher.register(payload => {
       responsesStore.setViewResponse(action.data);
       break;
 
+    case responseConstants.CLOSE_VIEW_RESPONSE:
+      responsesStore.removeViewResponse();
+      break;
+
     case responseConstants.APPROVE_RESPONSE:
-      responsesStore.setApproveResponse(action.data);
+      responsesStore.setResponseApproved(action.data);
       break;
 
     case responseConstants.REJECT_RESPONSE:
-      responsesStore.setRejectResponse(action.data);
+      responsesStore.setResponseRejected(action.data);
       break;
 
     default:

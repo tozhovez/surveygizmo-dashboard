@@ -4,10 +4,6 @@ const responseActions = require('../../../../actions/response');
 class FormResponse extends React.PureComponent {
   constructor() {
     super();
-
-    this.state = {
-      approved: false
-    };
   }
 
   render() {
@@ -15,7 +11,7 @@ class FormResponse extends React.PureComponent {
     const { questions } = response;
 
     return (
-      <tr className={`form-responses-item ${this.state.approved ? 'approved' : 'not-approved'}`}>
+      <tr className={`form-responses-item ${response.statusString.toLowerCase()}`}>
         <td>{`${questions['Full name']}`}</td>
         <td>{questions['Submitter Email']}</td>
         <td>{questions.Organization}</td>

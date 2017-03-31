@@ -1,20 +1,13 @@
 const React = require('react');
 const responsesStore = require('../../../../stores/responses');
+const responseActions = require('../../../../actions/response');
 
 module.exports = class FormResponseDetails extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      approved: null
-    };
-  }
-
   render() {
     const response = responsesStore.getViewResponse();
     if (!response) return null;
 
-    const { showApproveModal, showRejectModal, close } = this.props;
+    const { showApproveModal, showRejectModal } = this.props;
     const { questions } = response;
 
     return (
@@ -32,7 +25,7 @@ module.exports = class FormResponseDetails extends React.Component {
             )
           }
         </div>
-        <button onClick={close}>Close</button>
+        <button onClick={responseActions.closeViewResponse}>Close</button>
         <button onClick={() => showApproveModal(response)}>Approve</button>
         <button onClick={() => showRejectModal(response)}>Reject</button>
       </div>

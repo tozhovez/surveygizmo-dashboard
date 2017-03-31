@@ -18,7 +18,6 @@ class FormResponses extends React.PureComponent {
     this.showApproveModal = this.showApproveModal.bind(this);
     this.showRejectModal = this.showRejectModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.closeDetails = this.closeDetails.bind(this);
     this.search = this.search.bind(this);
     this.filter = this.filter.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -27,7 +26,6 @@ class FormResponses extends React.PureComponent {
       search: '',
       filter: '',
       responses: [],
-      viewResponse: null,
       approveResponse: null,
       rejectResponse: null,
       currentPage: 1
@@ -56,12 +54,6 @@ class FormResponses extends React.PureComponent {
     this.setState({
       rejectResponse: null,
       approveResponse: null
-    });
-  }
-
-  closeDetails() {
-    this.setState({
-      viewResponse: null
     });
   }
 
@@ -174,8 +166,6 @@ class FormResponses extends React.PureComponent {
         </div>
 
         <FormResponseDetails
-          response={viewResponse}
-          close={this.closeDetails}
           showApproveModal={this.showApproveModal}
           showRejectModal={this.showRejectModal}
         />

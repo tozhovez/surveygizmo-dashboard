@@ -30,6 +30,13 @@ class ResponseActions {
     });
   }
 
+  closeViewResponse() {
+    dispatcher.handleAction({
+      actionType: responseConstants.CLOSE_VIEW_RESPONSE,
+      data: null
+    });
+  }
+
   approveResponse(response, emailContent) {
     const xhr = new XMLHttpRequest();
     const data = { emailContent };
@@ -37,6 +44,7 @@ class ResponseActions {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         const surveyResponse = JSON.parse(xhr.responseText);
+
         dispatcher.handleAction({
           actionType: responseConstants.APPROVE_RESPONSE,
           data: surveyResponse
@@ -48,6 +56,32 @@ class ResponseActions {
     };
 
     xhr.open('POST', `/responses/${response.id}/approve`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
+  }
+
+  rejectResponse(response, emailContent) {
+    const xhr = new XMLHttpRequest();
+    const data = {
+      email: response.questions['Submitter Email'],
+      emailContent
+    };
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const surveyResponse = JSON.parse(xhr.responseText);
+
+        dispatcher.handleAction({
+          actionType: responseConstants.REJECT_RESPONSE,
+          data: surveyResponse
+        });
+      }
+      else if (xhr.readyState === 4 && xhr.status !== 200) {
+        throw new Error('Reject response failed');
+      }
+    };
+
+    xhr.open('POST', `/responses/${response.id}/reject`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
   }
