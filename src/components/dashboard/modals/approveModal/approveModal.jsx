@@ -20,6 +20,7 @@ module.exports = class ApproveModal extends React.Component {
       this.props.response,
       this.state.emailContent
     );
+    this.close();
   }
 
   close() {
