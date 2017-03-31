@@ -6,79 +6,36 @@ const FormResponse = require('./formResponse/formResponse.jsx');
 const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
 const RejectModal = require('../modals/rejectModal/rejectModal.jsx');
+const responsesStore = require('../../../stores/responses');
+const responseActions = require('../../../actions/response');
 
 class FormResponses extends React.PureComponent {
   constructor() {
     super();
 
+    this.onStoreChange = this.onStoreChange.bind(this);
     this.viewResponse = this.viewResponse.bind(this);
     this.showApproveModal = this.showApproveModal.bind(this);
     this.showRejectModal = this.showRejectModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.closeDetails = this.closeDetails.bind(this);
     this.search = this.search.bind(this);
     this.filter = this.filter.bind(this);
-    this.getPageData = this.getPageData.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
 
     this.state = {
       search: '',
       filter: '',
       responses: [],
-      viewResponse: null,
       approveResponse: null,
       rejectResponse: null,
       currentPage: 1
     };
   }
 
-  getResponses() {
-    const xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-
-        this.setState({
-          responses: data.data,
-          currentPage: data.currentPage,
-          pageCount: data.pageCount
-        });
-      }
-      else if (xhr.readyState === 4 && xhr.status !== 200) {
-        throw new Error('Fetching responses failed');
-      }
-    };
-
-    xhr.open('GET', '/responses', true);
-    xhr.send();
-  }
-
-  getPageData() {
-    const xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-
-        this.setState({
-          responses: data.data
-        });
-      }
-      else if (xhr.readyState === 4 && xhr.status !== 200) {
-        throw new Error('Fetching responses failed');
-      }
-    };
-    xhr.open('GET', `/responses/page/${this.state.currentPage}`, true);
-    xhr.send();
-  }
-
   handlePageClick(data) {
-    const selected = data.selected + 1;
-
-    this.setState({ currentPage: selected }, () => {
-      this.getPageData();
-    });
+    const pageIndex = data.selected + 1;
+    this.setState({currentPage: pageIndex});
+    responseActions.loadResponses(pageIndex);
   }
 
   viewResponse(viewResponse) {
@@ -100,12 +57,6 @@ class FormResponses extends React.PureComponent {
     });
   }
 
-  closeDetails() {
-    this.setState({
-      viewResponse: null
-    });
-  }
-
   search(event) {
     this.setState({ search: event.target.value });
   }
@@ -114,8 +65,20 @@ class FormResponses extends React.PureComponent {
     this.setState({ filter: event.target.value });
   }
 
+  onStoreChange() {
+    this.setState({
+      responses: responsesStore.getResponses(this.state.currentPage),
+      pageCount: responsesStore.getTotalCount()
+    });
+  }
+
   componentDidMount() {
-    this.getResponses();
+    responsesStore.addChangeListener(this.onStoreChange);
+    responseActions.loadResponses(this.state.currentPage);
+  }
+
+  componentWillUnmount() {
+    responsesStore.removeChangeListener(this.onStoreChange);
   }
 
   render() {
@@ -203,8 +166,6 @@ class FormResponses extends React.PureComponent {
         </div>
 
         <FormResponseDetails
-          response={viewResponse}
-          close={this.closeDetails}
           showApproveModal={this.showApproveModal}
           showRejectModal={this.showRejectModal}
         />

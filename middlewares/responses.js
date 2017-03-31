@@ -48,13 +48,14 @@ const approveResponse = (req, res, next) => {
     text: emailContent,
     html: emailContent }).then(() => account)
   )
-  .then(account => res.send(account.username))
+  .then(() => res.send(surveyResponse))
   .catch(error => next(error));
 };
 
 const rejectResponse = (req, res, next) => {
   const { email, emailContent } = req.body;
   const surveyResponse = new SurveyResponse({
+    responseId: 0,
     submittedAt: '',
     questions: {},
     status: {
@@ -67,8 +68,9 @@ const rejectResponse = (req, res, next) => {
 
   surveyGizmo.getResponseData(req.params.responseId)
   .then(response => {
-    surveyResponse.questions = response.questions;
+    surveyResponse.responseId = response.id;
     surveyResponse.submittedAt = response.submittedAt;
+    surveyResponse.questions = response.questions;
 
     return Mailer.send({
       to: email,
@@ -77,9 +79,9 @@ const rejectResponse = (req, res, next) => {
       html: emailContent
     });
   })
-  .then(result => {
+  .then(() => {
     surveyResponse.save();
-    res.send(result);
+    res.send(surveyResponse);
   })
   .catch(error => next(error));
 };

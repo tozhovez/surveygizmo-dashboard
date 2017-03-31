@@ -110,7 +110,11 @@ table.form-responses {
     background: $secondary-color;
   }
 
-  tr.approved td{
+  tr.approved td {
+    color: $accent-color;
+  }
+
+  tr.rejected td {
     color: $accent-color;
   }
 
