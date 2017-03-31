@@ -19,7 +19,9 @@ const FormResponse = ({ response }) => {
 };
 
 FormResponse.propTypes = {
-  response: React.PropTypes.object.isRequired, // eslint-disable-line
+  response: React.PropTypes.shape({
+    questions: React.PropTypes.object.isRequired
+  }).isRequired
 };
 
 module.exports = FormResponse;

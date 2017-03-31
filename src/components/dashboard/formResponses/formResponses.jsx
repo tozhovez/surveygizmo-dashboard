@@ -66,7 +66,6 @@ class FormResponses extends React.PureComponent {
   }
 
   onStoreChange() {
-    console.log('change store');
     this.setState({
       responses: responsesStore.getResponses(this.state.currentPage),
       pageCount: responsesStore.getTotalCount()
