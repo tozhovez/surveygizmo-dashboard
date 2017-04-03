@@ -3,7 +3,7 @@ const responseConstants = require('../constants/response');
 
 class ResponseActions {
   loadResponses(pageIndex = 1) {
-    const xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest(); // eslint-disable-line
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
@@ -38,12 +38,13 @@ class ResponseActions {
   }
 
   approveResponse(response, emailContent) {
-    const xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest(); // eslint-disable-line
     const data = { emailContent };
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         const surveyResponse = JSON.parse(xhr.responseText);
+
 
         dispatcher.handleAction({
           actionType: responseConstants.APPROVE_RESPONSE,
@@ -61,7 +62,7 @@ class ResponseActions {
   }
 
   rejectResponse(response, emailContent) {
-    const xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest(); // eslint-disable-line
     const data = {
       email: response.questions['Submitter Email'],
       emailContent
