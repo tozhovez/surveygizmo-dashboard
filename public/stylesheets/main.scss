@@ -2,6 +2,7 @@ $primary-color: #4F463D;
 $secondary-color: #9B9EA0;
 $accent-color: #F76B1C;
 
+@import 'errorModal';
 @import 'approveModal';
 @import 'formResponses';
 @import 'footer';

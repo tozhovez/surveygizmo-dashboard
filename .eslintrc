@@ -6,6 +6,7 @@
     "brace-style": "off",
     "strict": "off",
     "no-use-before-define": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-mixed-operators": "off"
   }
 }

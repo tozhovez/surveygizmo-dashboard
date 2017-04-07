@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require('react');
 const responseActions = require('../../../../actions/response');
 

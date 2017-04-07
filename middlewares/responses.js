@@ -1,88 +1,108 @@
 const surveyGizmo = require('../lib/SurveyGizmo');
 const EdxApi = require('../lib/EdxApi');
 const Mailer = require('../lib/mailer');
+const { UserDataException } = require('../lib/customExceptions');
 
 const SurveyResponse = require('../models/surveyResponse');
 
 const approveResponse = (req, res, next) => {
-  const surveyResponse = new SurveyResponse({
-    responseId: 0,
-    submittedAt: '',
-    questions: {},
-    status: {
-      accountCreated: null,
-      grantedCcxRole: null,
-      sentPasswordReset: null,
-      rejected: null
+  const { access_token: accessToken } = req.session.token;
+  const { email, emailContent } = req.body;
+  const { responseId } = req.params;
+
+  SurveyResponse.getByEmail(email)
+  .then(surveyResponse => {
+    if (surveyResponse && isApprovedOrRejected(surveyResponse)) {
+      return res.send(surveyResponse);
     }
-  });
-  const emailContent = req.body.emailContent;
 
-  surveyGizmo.getResponseData(req.params.responseId)
-  .then(response => {
-    surveyResponse.responseId = response.id;
-    surveyResponse.submittedAt = response.submittedAt;
-    surveyResponse.questions = response.questions;
-
-    return surveyResponse.save().then(() => response);
+    /**
+     * Catch {UserDataException} if doApproveResponse throws one,
+     * otherwise continue with promise chain
+     */
+    return doApproveResponse(emailContent, responseId, accessToken)
+    .catch(UserDataException, exception => {
+      res.status(400).send(exception.message);
+    })
+    .then(response => res.send(response));
   })
-  .then(response => EdxApi.createAccount(response.questions))
-  .then(account => {
-    surveyResponse.status.accountCreated = new Date();
-    return surveyResponse.save().then(() => account);
-  })
-  .then(account => EdxApi.grantCcxRole(account, req.session.token.access_token))
-  .then(account => {
-    surveyResponse.status.grantedCcxRole = new Date();
-
-    return surveyResponse.save().then(() => account);
-  })
-  .then(account => EdxApi.sendResetPasswordRequest(account))
-  .then(account => {
-    surveyResponse.status.sentPasswordReset = new Date();
-    return surveyResponse.save().then(() => account);
-  })
-  .then(account => Mailer.send({
-    to: account.email,
-    subject: 'FastTrac Application Approved',
-    text: emailContent,
-    html: emailContent }).then(() => account)
-  )
-  .then(() => res.send(surveyResponse))
   .catch(error => next(error));
 };
 
+const isApprovedOrRejected = ({ status }) => status &&
+  (status.accountCreated &&
+  status.sentPasswordReset &&
+  status.grantedCcxRole ||
+  status.rejected);
+
+/**
+ * Function does all the approval logic through the chain of promises.
+ *
+ * Once the response data is fetched from db,
+ * createAccount is called from EdxApi and response status is updated in db.
+ *
+ * Return value of createAccount is destructured into:
+ * {isCreated} - boolean indicating whether account was created in edX or already existed
+ * {form} - holds account info
+ * Only if account was created reset password email is sent
+ *
+ * At the end, user is granted ccx role
+ * @param {string} emailContent for email sent on response approval
+ * @param {number} responseId used to fetch response data from db
+ * @param {string} token fetched from session, used to login current user into edX
+ */
+const doApproveResponse = (emailContent, responseId, token) => {
+  let account;
+  const surveyResponse = new SurveyResponse();
+
+  return surveyGizmo.getResponseData(responseId)
+  .then(data => surveyResponse.setData(data))
+  .then(() => surveyResponse.setAccountCreated())
+  .then(() => EdxApi.createAccount(surveyResponse.questions))
+  .catch(UserDataException, exception => {
+    throw exception;
+  })
+  .then(({ isCreated, form }) => {
+    account = form;
+
+    if (isCreated) {
+      sendResetPasswordEmail(
+        account,
+        emailContent
+      )
+      .then(() => surveyResponse.setSentPasswordReset());
+    }
+  })
+  .then(() => EdxApi.grantCcxRole(account, token))
+  .then(() => surveyResponse.setGrantedCcxRole())
+  .then(() => surveyResponse);
+};
+
+const sendResetPasswordEmail = (account, content) =>
+  Promise.all([
+    EdxApi.sendResetPasswordRequest(account),
+    Mailer.send({
+      to: account.email,
+      subject: 'FastTrac Application Approved',
+      text: content,
+      html: content
+    })
+  ]);
+
 const rejectResponse = (req, res, next) => {
   const { email, emailContent } = req.body;
-  const surveyResponse = new SurveyResponse({
-    responseId: 0,
-    submittedAt: '',
-    questions: {},
-    status: {
-      accountCreated: null,
-      grantedCcxRole: null,
-      sentPasswordReset: null,
-      rejected: new Date()
-    }
-  });
+  const surveyResponse = new SurveyResponse();
 
   surveyGizmo.getResponseData(req.params.responseId)
-  .then(response => {
-    surveyResponse.responseId = response.id;
-    surveyResponse.submittedAt = response.submittedAt;
-    surveyResponse.questions = response.questions;
-
-    return Mailer.send({
-      to: email,
-      subject: 'FastTrac Application Rejected',
-      text: emailContent,
-      html: emailContent
-    });
-  })
-  .then(() => {
-    surveyResponse.save();
-    res.send(surveyResponse);
-  })
+  .then(response => surveyResponse.setData(response))
+  .then(() => surveyResponse.setRejected())
+  .then(() => Mailer.send({
+    to: email,
+    subject: 'FastTrac Application Rejected',
+    text: emailContent,
+    html: emailContent
+  }))
+  .then(() => res.send(surveyResponse))
   .catch(error => next(error));
 };
 

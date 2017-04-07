@@ -1,5 +1,6 @@
 const dispatcher = require('../dispatcher');
 const responseConstants = require('../constants/response');
+const modalConstants = require('../constants/modal');
 
 class ResponseActions {
   loadResponses(pageIndex = 1) {
@@ -39,7 +40,10 @@ class ResponseActions {
 
   approveResponse(response, emailContent) {
     const xhr = new XMLHttpRequest(); // eslint-disable-line
-    const data = { emailContent };
+    const data = {
+      email: response.questions['Submitter Email'],
+      emailContent
+    };
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
@@ -49,6 +53,16 @@ class ResponseActions {
         dispatcher.handleAction({
           actionType: responseConstants.APPROVE_RESPONSE,
           data: surveyResponse
+        });
+      }
+      else if (xhr.readyState === 4 && xhr.status === 400) {
+        const error = xhr.responseText;
+
+        dispatcher.handleAction({
+          actionType: modalConstants.SHOW_ERROR_MODAL,
+          data: {
+            content: error,
+          }
         });
       }
       else if (xhr.readyState === 4 && xhr.status !== 200) {

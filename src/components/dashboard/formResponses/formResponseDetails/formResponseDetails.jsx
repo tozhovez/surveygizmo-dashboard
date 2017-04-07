@@ -1,4 +1,5 @@
 const React = require('react');
+const ErrorModal = require('../../modals/errorModal/errorModal.jsx');
 const responsesStore = require('../../../../stores/responses');
 const responseActions = require('../../../../actions/response');
 
@@ -10,6 +11,7 @@ const FormResponseDetails = ({ showApproveModal, showRejectModal }) => {
 
   return (
     <div className="form-response-details">
+      <ErrorModal />
       <div className="content">
         <h1>
           {response.statusString}

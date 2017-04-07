@@ -20,6 +20,7 @@
     "express-compile-sass": "^3.0.4",
     "express-session": "^1.15.1",
     "flux": "^3.1.2",
+    "hasha": "^2.2.0",
     "jade": "~1.11.0",
     "mongodb": "^2.2.24",
     "mongoose": "^4.9.0",
@@ -28,6 +29,7 @@
     "nodemailer": "^3.1.8",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
+    "react-modal": "^1.7.3",
     "react-paginate": "^4.2.0",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.2"
