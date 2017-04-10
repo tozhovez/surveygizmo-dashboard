@@ -169,5 +169,11 @@ table.form-responses {
     &:hover {
       opacity: .7;
     }
+
+    &:disabled,
+    &[disabled] {
+      opacity: .6;
+      cursor: not-allowed;
+    }
   }
 }
