@@ -2,6 +2,7 @@
 
 const React = require('react');
 const ReactPaginate = require('react-paginate');
+const FormResponsesTable = require('./formResponsesTable.jsx');
 const FormResponse = require('./formResponse/formResponse.jsx');
 const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
@@ -70,6 +71,10 @@ class FormResponses extends React.PureComponent {
     this.setState({ filter: event.target.value });
   }
 
+  printPage() {
+    return 'takaca'
+  }
+
   onStoreChange() {
     this.setState({
       responses: responsesStore.getResponses(this.state.currentPage),
@@ -119,6 +124,7 @@ class FormResponses extends React.PureComponent {
       <div>
         <div className="stats">
           <h2>Affiliate Signup Responses ({this.state.totalCount})</h2>
+          <button onClick={this.printPage}></button>
           <span>
             <h1>{this.state.unprocessedCount}</h1>
             <h3>Unprocessed responses</h3>
@@ -142,29 +148,7 @@ class FormResponses extends React.PureComponent {
             <b style={{ textAlign: 'left' }}>{filteredResponses.length} results</b>
           </div>
         </div>
-        <table className="form-responses">
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Email</td>
-              <td>Company Name</td>
-              <td>Submitted at</td>
-              <td>Status</td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              filteredResponses.map(response =>
-                <FormResponse
-                  key={`form-response-${response.id}`}
-                  response={response}
-                  viewResponse={this.viewResponse}
-                />
-              )
-            }
-          </tbody>
-        </table>
+        <FormResponsesTable responses={filteredResponses} />
         <div className='pagination'>
           <ReactPaginate
             pageCount={this.state.pageCount}
