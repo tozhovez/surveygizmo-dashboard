@@ -25,3 +25,18 @@
         cursor: pointer;
     }
 }
+
+.printButton {
+    height: 28px;
+    width: 58px;
+
+    border-radius: 2px;
+    margin-bottom: 4px;
+    margin-left: 6px;
+}
+
+@media print {
+    .no-print {
+        display: none;
+    }
+}

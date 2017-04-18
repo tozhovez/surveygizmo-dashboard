@@ -72,7 +72,7 @@ class FormResponses extends React.PureComponent {
   }
 
   printPage() {
-    return 'takaca'
+    window.print();
   }
 
   onStoreChange() {
@@ -122,9 +122,9 @@ class FormResponses extends React.PureComponent {
 
     return (
       <div>
-        <div className="stats">
+        <button className="printButton" onClick={this.printPage} style={{display: "inline-block"}} >Print</button>
+        <div className="stats no-print">
           <h2>Affiliate Signup Responses ({this.state.totalCount})</h2>
-          <button onClick={this.printPage}></button>
           <span>
             <h1>{this.state.unprocessedCount}</h1>
             <h3>Unprocessed responses</h3>
@@ -149,7 +149,7 @@ class FormResponses extends React.PureComponent {
           </div>
         </div>
         <FormResponsesTable responses={filteredResponses} />
-        <div className='pagination'>
+        <div className='pagination no-print'>
           <ReactPaginate
             pageCount={this.state.pageCount}
             onPageChange={this.handlePageClick}

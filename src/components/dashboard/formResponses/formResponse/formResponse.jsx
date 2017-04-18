@@ -11,7 +11,7 @@ const FormResponse = ({ response }) => {
       <td>{questions.Organization}</td>
       <td>{(new Date(response.submittedAt)).toLocaleDateString()}</td>
       <td>{response.statusString}</td>
-      <td>
+      <td className="no-print">
         <button onClick={() => responseActions.viewResponse(response)}>View</button>
       </td>
     </tr>

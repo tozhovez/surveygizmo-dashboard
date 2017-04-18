@@ -12,7 +12,7 @@ const FormResponsesTable = ({ responses }) => (
         <td>Company Name</td>
         <td>Submitted at</td>
         <td>Status</td>
-        <td>Actions</td>
+        <td className="no-print">Actions</td>
       </tr>
     </thead>
     <tbody>
