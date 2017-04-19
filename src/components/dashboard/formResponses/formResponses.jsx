@@ -73,6 +73,10 @@ class FormResponses extends React.PureComponent {
   }
 
   printResponses() {
+    /**
+     * Chrome doesn't have onafterprint natively so we're manually switching state.
+     * With callback and timeout we're forcing JS to run this code synchronously.
+     */
     this.setState({ isPrinting: true }, () => {
       window.print();
       setTimeout(() => this.setState({ isPrinting: false }), 0);
