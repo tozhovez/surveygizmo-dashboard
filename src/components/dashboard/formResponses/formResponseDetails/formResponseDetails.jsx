@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require('react');
 const ErrorModal = require('../../modals/errorModal/errorModal.jsx');
 const responsesStore = require('../../../../stores/responses');
@@ -12,11 +13,11 @@ const FormResponseDetails = ({ showApproveModal, showRejectModal }) => {
   const noop = Function.prototype;
 
   if (isApprovedOrRejected) {
-    var approveButton = <button onClick={noop} disabled>Approve</button>;
-    var rejectButton = <button onClick={noop} disabled>Reject</button>;
+    var approveButton = <button className="no-print" onClick={noop} disabled>Approve</button>; // eslint-disable-line
+    var rejectButton = <button className="no-print" onClick={noop} disabled>Reject</button>; // eslint-disable-line
   } else {
-    var approveButton = <button onClick={() => showApproveModal(response)}>Approve</button>;
-    var rejectButton = <button onClick={() => showRejectModal(response)}>Reject</button>;
+    var approveButton = <button className="no-print" onClick={() => showApproveModal(response)}>Approve</button>; // eslint-disable-line
+    var rejectButton = <button className="no-print" onClick={() => showRejectModal(response)}>Reject</button>; // eslint-disable-line
   }
 
   return (
@@ -35,7 +36,8 @@ const FormResponseDetails = ({ showApproveModal, showRejectModal }) => {
           )
         }
       </div>
-      <button onClick={responseActions.closeViewResponse}>Close</button>
+      <button className="no-print" onClick={responseActions.closeViewResponse}>Close</button>
+      <button className="no-print" onClick={window.print}>Print</button>
       {approveButton}
       {rejectButton}
     </div>

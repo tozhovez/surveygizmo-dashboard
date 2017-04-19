@@ -2,6 +2,7 @@
 
 const React = require('react');
 const ReactPaginate = require('react-paginate');
+const FormResponsesTable = require('./formResponsesTable.jsx');
 const FormResponse = require('./formResponse/formResponse.jsx');
 const FormResponseDetails = require('./formResponseDetails/formResponseDetails.jsx');
 const ApproveModal = require('../modals/approveModal/approveModal.jsx');
@@ -33,7 +34,8 @@ class FormResponses extends React.PureComponent {
       pageCount: 0,
       approvedCount: 0,
       rejectedCount: 0,
-      unprocessedCount: 0
+      unprocessedCount: 0,
+      isPrinting: false
     };
   }
 
@@ -68,6 +70,17 @@ class FormResponses extends React.PureComponent {
 
   filter(event) {
     this.setState({ filter: event.target.value });
+  }
+
+  printResponses() {
+    /**
+     * Chrome doesn't have onafterprint natively so we're manually switching state.
+     * With callback and timeout we're forcing JS to run this code synchronously.
+     */
+    this.setState({ isPrinting: true }, () => {
+      window.print();
+      setTimeout(() => this.setState({ isPrinting: false }), 0);
+    });
   }
 
   onStoreChange() {
@@ -117,7 +130,8 @@ class FormResponses extends React.PureComponent {
 
     return (
       <div>
-        <div className="stats">
+        <button className="printButton no-print" onClick={() => this.printResponses()}>Print</button>
+        <div className="stats no-print">
           <h2>Affiliate Signup Responses ({this.state.totalCount})</h2>
           <span>
             <h1>{this.state.unprocessedCount}</h1>
@@ -142,30 +156,8 @@ class FormResponses extends React.PureComponent {
             <b style={{ textAlign: 'left' }}>{filteredResponses.length} results</b>
           </div>
         </div>
-        <table className="form-responses">
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Email</td>
-              <td>Company Name</td>
-              <td>Submitted at</td>
-              <td>Status</td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              filteredResponses.map(response =>
-                <FormResponse
-                  key={`form-response-${response.id}`}
-                  response={response}
-                  viewResponse={this.viewResponse}
-                />
-              )
-            }
-          </tbody>
-        </table>
-        <div className='pagination'>
+        <FormResponsesTable isPrinting={this.state.isPrinting} responses={filteredResponses} />
+        <div className='pagination no-print'>
           <ReactPaginate
             pageCount={this.state.pageCount}
             onPageChange={this.handlePageClick}
