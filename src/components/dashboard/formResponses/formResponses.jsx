@@ -34,7 +34,8 @@ class FormResponses extends React.PureComponent {
       pageCount: 0,
       approvedCount: 0,
       rejectedCount: 0,
-      unprocessedCount: 0
+      unprocessedCount: 0,
+      isPrinting: false
     };
   }
 
@@ -71,8 +72,11 @@ class FormResponses extends React.PureComponent {
     this.setState({ filter: event.target.value });
   }
 
-  printPage() {
-    window.print();
+  printResponses() {
+    this.setState({ isPrinting: true }, () => {
+      window.print();
+      setTimeout(() => this.setState({ isPrinting: false }), 0);
+    });
   }
 
   onStoreChange() {
@@ -122,7 +126,7 @@ class FormResponses extends React.PureComponent {
 
     return (
       <div>
-        <button className="printButton" onClick={this.printPage} style={{display: "inline-block"}} >Print</button>
+        <button className="printButton no-print" onClick={() => this.printResponses()}>Print</button>
         <div className="stats no-print">
           <h2>Affiliate Signup Responses ({this.state.totalCount})</h2>
           <span>
@@ -148,7 +152,7 @@ class FormResponses extends React.PureComponent {
             <b style={{ textAlign: 'left' }}>{filteredResponses.length} results</b>
           </div>
         </div>
-        <FormResponsesTable responses={filteredResponses} />
+        <FormResponsesTable isPrinting={this.state.isPrinting} responses={filteredResponses} />
         <div className='pagination no-print'>
           <ReactPaginate
             pageCount={this.state.pageCount}

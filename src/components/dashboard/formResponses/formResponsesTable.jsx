@@ -1,10 +1,10 @@
 const React = require('react');
 const FormResponse = require('./formResponse/formResponse.jsx');
 
-const { array } = React.PropTypes;
+const { array, bool } = React.PropTypes;
 
-const FormResponsesTable = ({ responses }) => (
-  <table className="form-responses no-print-if-details">
+const FormResponsesTable = ({ isPrinting, responses }) => (
+  <table className={`${isPrinting ? '' : 'no-print'} form-responses`}>
     <thead>
       <tr>
         <td>Name</td>
@@ -29,7 +29,8 @@ const FormResponsesTable = ({ responses }) => (
   </table>);
 
 FormResponsesTable.propTypes = {
-  responses: array.isRequired
+  responses: array.isRequired,
+  isPrinting: bool.isRequired,
 };
 
 module.exports = FormResponsesTable;
