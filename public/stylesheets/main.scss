@@ -134,6 +134,14 @@ table.form-responses {
   background: $secondary-color;
   text-align: center;
 
+
+  @media print {
+    & {
+    position: absolute;
+    }
+  }
+
+
   h1 {
     text-align: center;
   }
@@ -156,6 +164,14 @@ table.form-responses {
     }
   }
 
+  @media print {
+    .content {
+      overflow: visible;
+      height: 100%;
+    }
+  }
+
+
   button {
     cursor: pointer;
     height: 40px;
@@ -175,5 +191,16 @@ table.form-responses {
       opacity: .6;
       cursor: not-allowed;
     }
+  }
+}
+
+@media print {
+  #logowrapper, .form-responses, .stats, .pagination, .no-print {
+    display: none;
+  }
+
+  p {
+    page-break-inside: avoid;
+    page-break-after: auto;
   }
 }

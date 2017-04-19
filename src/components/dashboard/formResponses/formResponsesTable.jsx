@@ -4,7 +4,7 @@ const FormResponse = require('./formResponse/formResponse.jsx');
 const { array } = React.PropTypes;
 
 const FormResponsesTable = ({ responses }) => (
-  <table className="form-responses">
+  <table className="form-responses no-print-if-details">
     <thead>
       <tr>
         <td>Name</td>
