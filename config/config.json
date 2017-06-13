@@ -81,6 +81,6 @@
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
     "whitelistRoutes": ["/users/auth", "/users/login"],
-    "courseId": "course-v1:edX+DemoX+Demo_Course"
+    "courseId": "course-v1:Kauffman+nv+nv"
   }
 }
