@@ -1,3 +1,4 @@
+/* eslint-disable */
 const React = require('react');
 const responseActions = require('../../../../actions/response');
 
@@ -35,9 +36,11 @@ module.exports = class RejectModal extends React.Component {
 
   componentWillUpdate(nextProps) {
     if (!(nextProps === this.props)) {
+      const name = nextProps.response && `${nextProps.response.questions['Submitter First Name']} ${nextProps.response.questions['Submitter Last Name']}`
+
       this.setState({
         open: !!nextProps.response,
-        emailContent: `Dear ${nextProps.response && nextProps.response.questions['Full name']},
+        emailContent: `Dear ${name},
 we have rejected your account.`
       });
     }
@@ -52,7 +55,7 @@ we have rejected your account.`
           Close
         </button>
         <div className="approve-modal-content">
-          <h1>Reject application for {response.questions['Full name']}?</h1>
+          <h1>Reject application for {`${response.questions['Submitter First Name']} ${response.questions['Submitter Last Name']}`}?</h1>
           <label htmlFor="">
             The following email will be sent to {response.questions['Submitter Email']}:
           </label>
