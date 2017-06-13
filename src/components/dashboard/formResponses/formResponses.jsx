@@ -111,9 +111,10 @@ class FormResponses extends React.PureComponent {
       filteredResponses = responses.filter(r =>
         r.questions &&
         (
-          (r.questions['Full name'].toLowerCase()).indexOf(search.toLowerCase()) >= 0 ||
+          (r.questions['Submitter First Name'].toLowerCase()).indexOf(search.toLowerCase()) >= 0 ||
+          (r.questions['Submitter Last Name'].toLowerCase()).indexOf(search.toLowerCase()) >= 0 ||
           (r.questions['Submitter Email'].toLowerCase()).indexOf(search.toLowerCase()) >= 0 ||
-          (r.questions['Organization'].toLowerCase()).indexOf(search.toLowerCase()) >= 0
+          (r.questions['Organization Name'].toLowerCase()).indexOf(search.toLowerCase()) >= 0
         )
       );
     }

@@ -6,9 +6,9 @@ const FormResponse = ({ response }) => {
 
   return (
     <tr className={`form-responses-item ${response.statusString.toLowerCase()}`}>
-      <td>{`${questions['Full name']}`}</td>
+      <td>{`${questions['Submitter First Name']} ${questions['Submitter Last Name']}`}</td>
       <td>{questions['Submitter Email']}</td>
-      <td>{questions.Organization}</td>
+      <td>{questions['Organization Name']}</td>
       <td>{(new Date(response.submittedAt)).toLocaleDateString()}</td>
       <td>{response.statusString}</td>
       <td className="no-print">
