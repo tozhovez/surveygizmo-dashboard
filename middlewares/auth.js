@@ -1,11 +1,11 @@
 const axios = require('axios');
-const { baseUrl, lmsPort } = require('../config/main');
+const config = require('../config/main');
 
 const getUserInfo = (req, res) => {
   const accessToken = req.session.token.access_token;
   const options = {
     method: 'GET',
-    url: `${baseUrl}:${lmsPort}/oauth2/user_info`,
+    url: `${config.lmsUrl}/oauth2/user_info`,
     headers: {
       Authorization: `Bearer ${accessToken}`
     }
@@ -45,7 +45,7 @@ const storeUserRole = req => {
   const accessToken = req.session.token && req.session.token.access_token;
   const options = {
     method: 'GET',
-    url: `${baseUrl}:${lmsPort}/api/user/v1/is_staff`,
+    url: `${config.lmsUrl}/api/user/v1/is_staff`,
     headers: {
       Authorization: `Bearer ${accessToken}`
     }
