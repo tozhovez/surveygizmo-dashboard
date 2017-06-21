@@ -9,9 +9,7 @@ html
       h4 Survey Gizmo Dashboard
       h5.no-print
         a(href='/') Home
-        a(href='/', onclick=`javascript:event.target.port=${config.lmsPort}`) LMS
-        a(href='/', onclick=`javascript:event.target.port=${config.studioPort}`) Studio
-        a(href='/users/auth', onclick='javascript:event.target.port=3000') Portfolio
+        a(href=config.lmsUrl) LMS
 
         if email
           a(href='/users/logout', title='Click to log out')= email
