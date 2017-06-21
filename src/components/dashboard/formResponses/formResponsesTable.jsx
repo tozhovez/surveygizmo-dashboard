@@ -29,7 +29,7 @@ const FormResponsesTable = ({ isPrinting, responses }) => (
   </table>);
 
 FormResponsesTable.propTypes = {
-  responses: array.isRequired,
+  responses: array.isRequired, // eslint-disable-line
   isPrinting: bool.isRequired,
 };
 

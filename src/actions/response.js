@@ -49,7 +49,6 @@ class ResponseActions {
       if (xhr.readyState === 4 && xhr.status === 200) {
         const surveyResponse = JSON.parse(xhr.responseText);
 
-
         dispatcher.handleAction({
           actionType: responseConstants.APPROVE_RESPONSE,
           data: surveyResponse
