@@ -20,7 +20,7 @@ const approveResponse = (req, res, next) => {
      * Catch {UserDataException} if doApproveResponse throws one,
      * otherwise continue with promise chain
      */
-    return doApproveResponse(emailContent, responseId, accessToken)
+    return doApproveResponse(emailContent, responseId, accessToken, req)
     .catch(UserDataException, exception => {
       res.status(400).send(exception.message);
     })
@@ -51,7 +51,7 @@ const isApprovedOrRejected = ({ status }) => status &&
  * @param {number} responseId used to fetch response data from db
  * @param {string} token fetched from session, used to login current user into edX
  */
-const doApproveResponse = (emailContent, responseId, token) => {
+const doApproveResponse = (emailContent, responseId, token, req) => {
   let account;
   const surveyResponse = new SurveyResponse();
 
@@ -73,7 +73,7 @@ const doApproveResponse = (emailContent, responseId, token) => {
       .then(() => surveyResponse.setSentPasswordReset());
     }
   })
-  .then(() => EdxApi.grantCcxRole(account, token))
+  .then(() => EdxApi.grantCcxRole(req, account, token))
   .then(() => surveyResponse.setGrantedCcxRole())
   .then(() => surveyResponse);
 };
