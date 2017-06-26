@@ -12,6 +12,7 @@
     "axios": "^0.15.3",
     "bluebird": "^3.5.0",
     "body-parser": "~1.16.0",
+    "browserify": "^14.4.0",
     "connect-redis": "^3.2.0",
     "cookie-parser": "~1.4.3",
     "datasets-us-states-names-abbr": "^1.0.0",
