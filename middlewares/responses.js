@@ -73,6 +73,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
       .then(() => surveyResponse.setSentPasswordReset());
     }
   })
+  .then(() => EdxApi.enrollUserIntoFacilitatorCourse(account.username))
   .then(() => EdxApi.grantCcxRole(req, account, token))
   .then(() => surveyResponse.setGrantedCcxRole())
   .then(() => surveyResponse);
