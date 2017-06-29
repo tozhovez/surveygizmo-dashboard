@@ -39,7 +39,7 @@
     "cookieMaxAge": 60000,
     "whitelistRoutes": ["/users/auth", "/users/login"],
     "courseId": "course-v1:edX+DemoX+Demo_Course",
-    "facilitatorCourseId": "course-v1:edX+DemoX+Demo_Course"
+    "facilitatorCourseId": "course-v1:test+test+2014_T1"
   },
   "production": {
     "username": "root",
