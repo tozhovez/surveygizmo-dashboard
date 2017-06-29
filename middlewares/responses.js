@@ -66,10 +66,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
     account = form;
 
     if (isCreated) {
-      sendResetPasswordEmail(
-        account,
-        emailContent
-      )
+      EdxApi.sendResetPasswordRequest(account)
       .then(() => surveyResponse.setSentPasswordReset());
     }
   })
@@ -78,17 +75,6 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
   .then(() => surveyResponse.setGrantedCcxRole())
   .then(() => surveyResponse);
 };
-
-const sendResetPasswordEmail = (account, content) =>
-  Promise.all([
-    EdxApi.sendResetPasswordRequest(account),
-    Mailer.send({
-      to: account.email,
-      subject: 'FastTrac Application Approved',
-      text: content,
-      html: content
-    })
-  ]);
 
 const rejectResponse = (req, res, next) => {
   const { email, emailContent } = req.body;
