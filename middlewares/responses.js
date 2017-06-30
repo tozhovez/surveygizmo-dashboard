@@ -72,6 +72,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
   })
   .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
   .then(() => EdxApi.grantCcxRole(req, account))
+  .then(() => EdxApi.grantCcxRoleFaciliatorCourse(req, account))
   .then(() => surveyResponse.setGrantedCcxRole())
   .then(() => surveyResponse);
 };
