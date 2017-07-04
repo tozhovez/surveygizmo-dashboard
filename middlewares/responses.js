@@ -2,7 +2,6 @@ const surveyGizmo = require('../lib/SurveyGizmo');
 const EdxApi = require('../lib/EdxApi');
 const Mailer = require('../lib/mailer');
 const { UserDataException } = require('../lib/customExceptions');
-
 const SurveyResponse = require('../models/surveyResponse');
 
 const approveResponse = (req, res, next) => {
@@ -11,29 +10,30 @@ const approveResponse = (req, res, next) => {
   const { responseId } = req.params;
 
   SurveyResponse.getByEmail(email)
-  .then(surveyResponse => {
-    if (surveyResponse && isApprovedOrRejected(surveyResponse)) {
-      return res.send(surveyResponse);
-    }
+    .then(surveyResponse => {
+      if (surveyResponse && isApprovedOrRejected(surveyResponse)) {
+        return res.send(surveyResponse);
+      }
 
-    /**
+      /**
      * Catch {UserDataException} if doApproveResponse throws one,
      * otherwise continue with promise chain
      */
-    return doApproveResponse(emailContent, responseId, accessToken, req)
-    .catch(UserDataException, exception => {
-      res.status(400).send(exception.message);
+      return doApproveResponse(emailContent, responseId, accessToken, req)
+        .catch(UserDataException, exception => {
+          res.status(400).send(exception.message);
+        })
+        .then(response => res.send(response));
     })
-    .then(response => res.send(response));
-  })
-  .catch(error => next(error));
+    .catch(error => next(error));
 };
 
-const isApprovedOrRejected = ({ status }) => status &&
-  (status.accountCreated &&
-  status.sentPasswordReset &&
-  status.grantedCcxRole ||
-  status.rejected);
+const isApprovedOrRejected = ({ status }) =>
+  status &&
+  ((status.accountCreated &&
+    status.sentPasswordReset &&
+    status.grantedCcxRole) ||
+    status.rejected);
 
 /**
  * Function does all the approval logic through the chain of promises.
@@ -53,45 +53,82 @@ const isApprovedOrRejected = ({ status }) => status &&
  */
 const doApproveResponse = (emailContent, responseId, token, req) => {
   let account;
-  const surveyResponse = new SurveyResponse();
+  let data;
+  let surveyResponse;
 
-  return surveyGizmo.getResponseData(responseId)
-  .then(data => surveyResponse.setData(data))
-  .then(() => surveyResponse.setAccountCreated())
-  .then(() => EdxApi.createAccount(surveyResponse.questions))
-  .catch(UserDataException, exception => {
-    throw exception;
-  })
-  .then(({ isCreated, form }) => {
-    account = form;
+  return surveyGizmo
+    .getResponseData(responseId)
+    .then(responseData => {
+      data = responseData;
+    })
+    .then(() =>
+      SurveyResponse.findOne({
+        'questions.Submitter Email': data.questions['Submitter Email']
+      })
+    )
+    .then(response => {
+      if (!response) {
+        surveyResponse = new SurveyResponse();
+      } else {
+        surveyResponse = response;
+      }
+    })
+    .then(() => surveyResponse.setData(data))
+    .then(() => surveyResponse.setAccountCreated())
+    .then(() => EdxApi.createAccount(surveyResponse.questions))
+    .catch(UserDataException, exception => {
+      throw exception;
+    })
+    .then(({ isCreated, form }) => {
+      account = form;
 
-    if (isCreated) {
-      EdxApi.sendResetPasswordRequest(account)
-      .then(() => surveyResponse.setSentPasswordReset());
-    }
-  })
-  .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
-  .then(() => EdxApi.grantCcxRole(req, account))
-  .then(() => EdxApi.grantCcxRoleFaciliatorCourse(req, account))
-  .then(() => surveyResponse.setGrantedCcxRole())
-  .then(() => surveyResponse);
+      if (isCreated) {
+        EdxApi.sendResetPasswordRequest(account).then(() =>
+          surveyResponse.setSentPasswordReset()
+        );
+      }
+    })
+    .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
+    .then(() => EdxApi.grantCcxRole(req, account))
+    .then(() => EdxApi.grantCcxRoleFaciliatorCourse(req, account))
+    .then(() => surveyResponse.setGrantedCcxRole())
+    .then(() => surveyResponse);
 };
 
 const rejectResponse = (req, res, next) => {
   const { email, emailContent } = req.body;
-  const surveyResponse = new SurveyResponse();
+  let data;
+  let surveyResponse;
 
-  surveyGizmo.getResponseData(req.params.responseId)
-  .then(response => surveyResponse.setData(response))
-  .then(() => surveyResponse.setRejected())
-  .then(() => Mailer.send({
-    to: email,
-    subject: 'FastTrac Application Rejected',
-    text: emailContent,
-    html: emailContent
-  }))
-  .then(() => res.send(surveyResponse))
-  .catch(error => next(error));
+  return surveyGizmo
+    .getResponseData(req.params.responseId)
+    .then(responseData => {
+      data = responseData;
+    })
+    .then(() =>
+      SurveyResponse.findOne({
+        'questions.Submitter Email': data.questions['Submitter Email']
+      })
+    )
+    .then(response => {
+      if (!response) {
+        surveyResponse = new SurveyResponse();
+      } else {
+        surveyResponse = response;
+      }
+    })
+    .then(() => surveyResponse.setData(data))
+    .then(() => surveyResponse.setRejected())
+    .then(() =>
+      Mailer.send({
+        to: email,
+        subject: 'FastTrac Application Rejected',
+        text: emailContent,
+        html: emailContent
+      })
+    )
+    .then(() => res.send(surveyResponse))
+    .catch(error => next(error));
 };
 
 module.exports = { approveResponse, rejectResponse };
