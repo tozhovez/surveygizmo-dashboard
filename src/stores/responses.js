@@ -175,7 +175,10 @@ function getStatusString(response) {
   ) {
     return 'Approved';
   }
-  return 'Error. Stuck in limbo.';
+  return `Incomplete:
+    ${(status.accountCreated ? ' account created | ' : '')}
+    ${(status.sentPasswordReset ? ' sent password reset | ' : '')}
+    ${(status.grantedCcxRole ? ' granted ccx coach role' : '')}`;
 }
 
 module.exports = responsesStore;

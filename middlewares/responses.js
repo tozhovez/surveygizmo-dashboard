@@ -69,6 +69,11 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
       EdxApi.sendResetPasswordRequest(account)
       .then(() => surveyResponse.setSentPasswordReset());
     }
+    // don't send password request email, but record that we passed this step
+    // so we can track response status better
+    else {
+      surveyResponse.setSentPasswordReset();
+    }
   })
   .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
   .then(() => EdxApi.grantCcxRole(req, account))
