@@ -13,7 +13,7 @@
     "lmsUrl": "http://localhost:8000",
     "studioUrl": "http://localhost:8001",
     "sgUrl": "https://restapi.surveygizmo.com/v4/survey",
-    "sgSurveyId": 3392617,
+    "sgSurveyId": 3681981,
     "client": {
       "id": "sg-id",
       "secret": "sg-secret"

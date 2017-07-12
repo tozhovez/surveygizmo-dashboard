@@ -74,7 +74,6 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
       }
     })
     .then(() => surveyResponse.setData(data))
-    .then(() => surveyResponse.setAccountCreated())
     .then(() => EdxApi.createAccount(surveyResponse.questions))
     .catch(UserDataException, exception => {
       throw exception;
@@ -93,6 +92,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
         surveyResponse.setSentPasswordReset();
       }
     })
+    .then(() => surveyResponse.setAccountCreated())
     .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
     .then(() => EdxApi.grantCcxRole(req, account))
     .then(() => EdxApi.grantCcxRoleFaciliatorCourse(req, account))
