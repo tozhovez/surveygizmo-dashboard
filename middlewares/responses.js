@@ -82,15 +82,13 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
       account = form;
 
       if (isCreated) {
-        EdxApi.sendResetPasswordRequest(account).then(() =>
-          surveyResponse.setSentPasswordReset()
-        );
+        return EdxApi.sendResetPasswordRequest(account)
+        .then(() => surveyResponse.setSentPasswordReset());
       }
       // don't send password request email, but record that we passed this step
       // so we can track response status better
-      else {
-        surveyResponse.setSentPasswordReset();
-      }
+      return sendResetPasswordEmail(account, emailContent)
+      .then(() => surveyResponse.setSentPasswordReset());
     })
     .then(() => surveyResponse.setAccountCreated())
     .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
@@ -99,6 +97,13 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
     .then(() => surveyResponse.setGrantedCcxRole())
     .then(() => surveyResponse);
 };
+
+const sendResetPasswordEmail = (account, content) => Mailer.send({
+  to: account.email,
+  subject: 'FastTrac Application Approved',
+  text: content,
+  html: content
+});
 
 const rejectResponse = (req, res, next) => {
   const { email, emailContent } = req.body;
