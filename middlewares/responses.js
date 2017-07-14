@@ -100,7 +100,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
 
 const sendResetPasswordEmail = (account, content) => Mailer.send({
   to: account.email,
-  subject: 'FastTrac Application Approved',
+  subject: 'Kauffman FastTrac Affiliate Approval',
   text: content,
   html: content
 });

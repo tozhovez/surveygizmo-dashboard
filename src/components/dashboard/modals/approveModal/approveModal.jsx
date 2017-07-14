@@ -1,6 +1,7 @@
 /* eslint-disable */
 const React = require('react');
 const responseActions = require('../../../../actions/response');
+const config = require('../../../../../config/main');
 
 module.exports = class ApproveModal extends React.Component {
   constructor() {
@@ -40,9 +41,15 @@ module.exports = class ApproveModal extends React.Component {
 
       this.setState({
         open: !!nextProps.response,
-        emailContent: `Dear ${name},
-we have approved your account.
-Go to edx and log in.`
+        emailContent: `We are happy to let you know that we have approved your application to become a Kauffman FastTrac affiliate.
+
+To learn more about the program, and to get started, please log in with the FastTrac account you've already created: ${config.lmsUrl}/login.
+
+If you did not apply to become a FastTrac affiliate, please disregard this email.
+
+Thank you for your participation!
+
+The FastTrac Team`
       });
     }
   }
