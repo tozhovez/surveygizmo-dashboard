@@ -9,5 +9,9 @@
     "class-methods-use-this": "off",
     "no-mixed-operators": "off",
     "no-debugger": "warn"
+  },
+  "env": {
+    "browser": true,
+    "node": true
   }
 }
