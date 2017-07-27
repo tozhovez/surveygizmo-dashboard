@@ -75,6 +75,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
     })
     .then(() => surveyResponse.setData(data))
     .then(() => EdxApi.createAccount(surveyResponse.questions))
+    .then(() => EdxApi.createAffiliateEntity(req, surveyResponse.questions))
     .catch(UserDataException, exception => {
       throw exception;
     })
