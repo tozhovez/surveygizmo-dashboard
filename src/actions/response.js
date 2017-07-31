@@ -39,7 +39,7 @@ class ResponseActions {
   }
 
   approveResponse(response, emailContent) {
-    const xhr = new XMLHttpRequest(); // eslint-disable-line
+    const xhr = new XMLHttpRequest();
     const data = {
       email: response.questions['Submitter Email'],
       emailContent

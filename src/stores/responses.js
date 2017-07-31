@@ -49,6 +49,10 @@ class ResponsesStore extends EventEmitter {
   }
 
   getViewResponse() {
+    if (this.viewResponse) {
+      this.viewResponse.statusString = getStatusString(this.viewResponse);
+    }
+
     return this.viewResponse;
   }
 

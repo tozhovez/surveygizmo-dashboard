@@ -20,10 +20,9 @@ const approveResponse = (req, res, next) => {
      * otherwise continue with promise chain
      */
       return doApproveResponse(emailContent, responseId, accessToken, req)
-        .catch(UserDataException, exception => {
-          res.status(400).send(exception.message);
-        })
-        .then(response => res.send(response));
+        .catch(UserDataException, exception => res.status(400).send(exception.message))
+        .then(response => res.send(response))
+        .catch(error => res.status(500).send(error));
     })
     .catch(error => next(error));
 };
