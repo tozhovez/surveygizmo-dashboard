@@ -91,6 +91,7 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
       .then(() => surveyResponse.setSentPasswordReset());
     })
     .then(() => surveyResponse.setAccountCreated())
+    .then(() => EdxApi.createAffiliateEntity(req, surveyResponse.questions))
     .then(() => EdxApi.enrollUserIntoFacilitatorCourse(req, account))
     .then(() => EdxApi.grantCcxRole(req, account))
     .then(() => EdxApi.grantCcxRoleFaciliatorCourse(req, account))
