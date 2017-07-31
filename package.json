@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www | npm run watch",
-    "build": "browserify -t bubleify ./src/app.js  > ./public/javascripts/bundle.js",
+    "build": "browserify -t bubleify -t [ envify --NODE_ENV production ] ./src/app.js  > ./public/javascripts/bundle.js",
     "build-dev": "browserify -d -t bubleify ./src/app.js > ./public/javascripts/bundle.js",
     "watch": "watchify -d -t bubleify ./src/app.js -o ./public/javascripts/bundle.js -v"
   },
@@ -39,6 +39,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "bubleify": "^0.7.0",
+    "envify": "^4.1.0",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
