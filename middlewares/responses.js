@@ -31,8 +31,7 @@ const approveResponse = (req, res, next) => {
 const isApprovedOrRejected = ({ status }) =>
   status &&
   ((status.accountCreated &&
-    status.sentPasswordReset &&
-    status.grantedCcxRole) ||
+    status.sentPasswordReset) ||
     status.rejected);
 
 /**
@@ -46,7 +45,6 @@ const isApprovedOrRejected = ({ status }) =>
  * {form} - holds account info
  * Only if account was created reset password email is sent
  *
- * At the end, user is granted ccx role
  * @param {string} emailContent for email sent on response approval
  * @param {number} responseId used to fetch response data from db
  * @param {string} token fetched from session, used to login current user into edX
@@ -92,7 +90,6 @@ const doApproveResponse = (emailContent, responseId, token, req) => {
     })
     .then(() => surveyResponse.setAccountCreated())
     .then(() => EdxApi.createAffiliateEntity(req, surveyResponse.questions))
-    .then(() => surveyResponse.setGrantedCcxRole())
     .then(() => surveyResponse);
 };
 

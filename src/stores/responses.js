@@ -68,7 +68,6 @@ class ResponsesStore extends EventEmitter {
     else {
       response.status = {
         sentPasswordReset: Date.now(),
-        grantedCcxRole: Date.now(),
         accountCreated: Date.now()
       };
     }
@@ -170,15 +169,13 @@ function getStatusString(response) {
   }
   else if (
     status.sentPasswordReset &&
-    status.grantedCcxRole &&
     status.accountCreated
   ) {
     return 'Approved';
   }
   return `Incomplete:
     ${(status.accountCreated ? ' account created | ' : '')}
-    ${(status.sentPasswordReset ? ' sent password reset | ' : '')}
-    ${(status.grantedCcxRole ? ' granted ccx coach role' : '')}`;
+    ${(status.sentPasswordReset ? ' sent password reset | ' : '')}`;
 }
 
 module.exports = responsesStore;
