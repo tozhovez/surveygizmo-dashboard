@@ -1,17 +1,12 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
     "database": {
       "host": "localhost",
       "port": "27017",
       "db": "surveygizmo"
     },
-    "host": "127.0.0.1",
-    "dialect": "mysql",
     "baseUrl": "http://localhost:3001",
     "lmsUrl": "http://localhost:8000",
-    "studioUrl": "http://localhost:8001",
     "sgUrl": "https://restapi.surveygizmo.com/v4/survey",
     "sgSurveyId": 3681981,
     "client": {
@@ -23,10 +18,6 @@
       "authorizePath": "/oauth2/authorize",
       "tokenPath": "/oauth2/access_token/"
     },
-    "lti": {
-      "key": "key",
-      "secret": "secret"
-    },
     "mail": {
       "host": "192.168.33.10",
       "port": 25,
@@ -37,23 +28,16 @@
     },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
-    "whitelistRoutes": ["/users/auth", "/users/login"],
-    "courseId": "course-v1:edX+DemoX+Demo_Course",
-    "facilitatorCourseId": "course-v1:test+test+2014_T1"
+    "whitelistRoutes": ["/users/auth", "/users/login"]
   },
   "production": {
-    "username": "root",
-    "password": null,
     "database": {
       "host": "localhost",
       "port": "27017",
       "db": "surveygizmo"
     },
-    "host": "127.0.0.1",
-    "dialect": "mysql",
     "baseUrl": "http://54.208.243.8:3001",
     "lmsUrl": "http://54.208.243.8",
-    "studioUrl": "http://54.208.243.8:18010",
     "sgUrl": "https://restapi.surveygizmo.com/v4/survey",
     "sgSurveyId": 3392617,
     "client": {
@@ -65,10 +49,6 @@
       "authorizePath": "/oauth2/authorize",
       "tokenPath": "/oauth2/access_token"
     },
-    "lti": {
-      "key": "key",
-      "secret": "secret"
-    },
     "mail": {
       "host": "localhost",
       "port": 25,
@@ -79,8 +59,6 @@
     },
     "cookieSecret": "surveygizmo",
     "cookieMaxAge": 60000,
-    "whitelistRoutes": ["/users/auth", "/users/login"],
-    "courseId": "course-v1:Kauffman+nv+nv",
-    "facilitatorCourseId": "course-v1:FastTrac+101+101"
+    "whitelistRoutes": ["/users/auth", "/users/login"]
   }
 }

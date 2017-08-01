@@ -6,7 +6,6 @@ const surveyResponseSchema = mongoose.Schema({
   questions: {},
   status: {
     accountCreated: { type: Date, default: null },
-    grantedCcxRole: { type: Date, default: null },
     sentPasswordReset: { type: Date, default: null },
     rejected: { type: Date, default: null }
   }
@@ -22,13 +21,6 @@ surveyResponseSchema.methods.setData = function ({ id, submittedAt, questions })
 surveyResponseSchema.methods.setAccountCreated = function () {
   if (!this.status.accountCreated) {
     this.status.accountCreated = new Date();
-  }
-  return this.save();
-};
-
-surveyResponseSchema.methods.setGrantedCcxRole = function () {
-  if (!this.status.grantedCcxRole) {
-    this.status.grantedCcxRole = new Date();
   }
   return this.save();
 };
