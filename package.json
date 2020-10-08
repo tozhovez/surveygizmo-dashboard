@@ -15,7 +15,7 @@
     "connect-redis": "^3.2.0",
     "cookie-parser": "~1.4.3",
     "datasets-us-states-names-abbr": "^1.0.0",
-    "debug": "~2.6.0",
+    "debug": "~2.6.9",
     "edx-oauth-middleware": "0.0.5",
     "express": "~4.14.1",
     "express-compile-sass": "^3.0.4",
